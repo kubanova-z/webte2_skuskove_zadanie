@@ -18,6 +18,7 @@ Route::get('/dashboard', function () {
 })->middleware(['auth'])->name('dashboard');
 
 
+
 // ✅ Password Reset GET form route — for user arriving from email
 Route::get('/reset-password/{token}', function ($token) {
     return view('auth.reset-password', ['token' => $token]);
@@ -32,6 +33,9 @@ Route::get('/reset-password', function () {
 Route::get('/change-password', function () {
     return view('auth.change-password');
 })->middleware(['auth'])->name('change-password');
+
+Route::put('/update-password', [ProfileController::class, 'updatePassword'])->name('password.update');
+
 
 // Authenticated routes
 Route::middleware(['auth'])->group(function () {
