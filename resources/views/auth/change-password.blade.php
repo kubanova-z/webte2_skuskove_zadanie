@@ -13,11 +13,43 @@
                     <label class="block font-medium text-sm text-gray-700 mt-2">Current Password</label>
                     <input name="current_password" type="password" class="block w-full mt-1 border rounded px-3 py-2" required>
 
-                    <label class="block font-medium text-sm text-gray-700 mt-4">New Password</label>
-                    <input name="password" type="password" class="block w-full mt-1 border rounded px-3 py-2" required>
+                    {{--<label class="block font-medium text-sm text-gray-700 mt-4">New Password</label>
+                    <input name="password" type="password" class="block w-full mt-1 border rounded px-3 py-2" required>--}}
+                    <div class="relative mt-4">
+                        <label for="password" class="block font-medium text-sm text-gray-700">New Password</label>
 
-                    <label class="block font-medium text-sm text-gray-700 mt-4">Confirm Password</label>
-                    <input name="password_confirmation" type="password" class="block w-full mt-1 border rounded px-3 py-2" required>
+                        <input id="password" name="password" type="password"
+                               class="block w-full mt-1 border rounded px-3 py-2 pr-10 focus:ring focus:ring-blue-300"
+                               required>
+
+                        <button type="button"
+                                onclick="toggleVisibility('password', this)"
+                                class="absolute right-3 top-[27px] flex items-center h-8 text-gray-500 hover:text-gray-700">
+                            <span class="material-symbols-outlined text-[22px] leading-none">visibility_off</span>
+                        </button>
+                    </div>
+
+
+
+
+                    {{--<label class="block font-medium text-sm text-gray-700 mt-4">Confirm Password</label>
+                    <input name="password_confirmation" type="password" class="block w-full mt-1 border rounded px-3 py-2" required>--}}
+
+                    <div class="relative mt-4">
+                        <label for="password_confirmation" class="block font-medium text-sm text-gray-700">Confirm Password</label>
+                        <input id="password_confirmation" name="password_confirmation" type="password"
+                               class="block w-full mt-1 border rounded px-3 py-2 pr-10 focus:ring focus:ring-blue-300"
+                               required>
+
+                        <button type="button"
+                                onclick="toggleVisibility('password', this)"
+                                class="absolute right-3 top-[27px] flex items-center h-8 text-gray-500 hover:text-gray-700">
+                            <span class="material-symbols-outlined text-[22px] leading-none">visibility_off</span>
+                        </button>
+
+                    </div>
+
+
 
                     <button type="submit"
                             class="mt-6 bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded">
@@ -47,6 +79,23 @@
             document.querySelector('input[name="password_confirmation"]').value = password;
         }
     </script>
+
+    <script>
+        function toggleVisibility(fieldId, button) {
+            const field = document.getElementById(fieldId);
+            const icon = button.querySelector('span');
+
+            if (field.type === "password") {
+                field.type = "text";
+                icon.textContent = "visibility_off"; // show crossed eye
+            } else {
+                field.type = "password";
+                icon.textContent = "visibility"; // show normal eye
+            }
+        }
+    </script>
+
+
 
 @endsection
 

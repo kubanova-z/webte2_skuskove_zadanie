@@ -18,13 +18,17 @@ Route::get('/dashboard', function () {
 })->middleware(['auth'])->name('dashboard');
 
 
+//user guide
+Route::get('/user-guide', [\App\Http\Controllers\UserGuideController::class, 'show'])->name('user-guide');
+Route::get('/user-guide/pdf', [\App\Http\Controllers\UserGuideController::class, 'downloadPdf'])->name('user-guide.pdf');
 
-// ✅ Password Reset GET form route — for user arriving from email
+
+//  Password Reset GET form route — for user arriving from email
 Route::get('/reset-password/{token}', function ($token) {
     return view('auth.reset-password', ['token' => $token]);
 })->middleware('guest')->name('password.reset');
 
-// ✅ Prevent people from manually visiting /reset-password without token
+//  Prevent people from manually visiting /reset-password without token
 Route::get('/reset-password', function () {
     return redirect('/forgot-password');
 });
