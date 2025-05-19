@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\MainPageController;
 use App\Http\Controllers\LoginHistoryController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\PDFController;
 use Illuminate\Http\Request;
 
 // Public routes
@@ -51,6 +52,26 @@ Route::middleware(['auth'])->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::post('/profile/update-password', [ProfileController::class, 'updatePassword'])->name('profile.updatePassword');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+
+    //pdf functions
+    Route::get('/pdf/remove-pages', [PDFController::class, 'showRemovePagesForm'])->name('pdf.remove-pages.form');
+    Route::post('/pdf/remove-pages', [PDFController::class, 'processRemovePages'])->name('pdf.remove-pages.process');
+
+    Route::get('/pdf/merge-pdfs', [PDFController::class, 'showMergePdfsForm'])->name('pdf.merge-pdfs.form');
+    Route::post('/pdf/merge-pdfs', [PDFController::class, 'processMergePdfs'])->name('pdf.merge-pdfs.process');
+
+    Route::get('/pdf/pdf-to-jpg', [PDFController::class, 'showPdfToJpgForm'])->name('pdf.pdf-to-jpg.form');
+    Route::post('/pdf/pdf-to-jpg', [PDFController::class, 'processPdfToJpg'])->name('pdf.pdf-to-jpg.process');
+
+    Route::get('/pdf/jpg-to-pdf', [PDFController::class, 'showJpgToPdfForm'])->name('pdf.jpg-to-pdf.form');
+    Route::post('/pdf/jpg-to-pdf', [PDFController::class, 'processJpgToPdf'])->name('pdf.jpg-to-pdf.process');
+
+    Route::get('/pdf/rotate-pages', [PDFController::class, 'showRotatePagesForm'])->name('pdf.rotate-pages.form');
+    Route::post('/pdf/rotate-pages', [PDFController::class, 'processRotatePages'])->name('pdf.rotate-pages.process');
+
+    Route::get('/pdf/split-pdf', [PDFController::class, 'showSplitPdfForm'])->name('pdf.split-pdf.form');
+    Route::post('/pdf/split-pdf', [PDFController::class, 'processSplitPdf'])->name('pdf.split-pdf.process');
+
 });
 
 require __DIR__.'/auth.php';

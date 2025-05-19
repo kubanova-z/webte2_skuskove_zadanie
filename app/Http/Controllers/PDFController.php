@@ -1,0 +1,256 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use Illuminate\Http\Request;
+
+class PDFController extends Controller
+{
+    //REMOVE PAGES METHODS
+    public function showRemovePagesForm()
+    {
+        return view('pdf.remove-pages');
+    }
+
+    public function processRemovePages(Request $request)
+    {
+        // 1. Validácia vstupu
+        $validated = $request->validate([
+            'pdf' => 'required|file|mimes:pdf|max:10240', // max 10 MB
+            'pages' => 'required|string',
+        ]);
+
+        // 2. Uloženie súboru
+        $uploadedPdf = $request->file('pdf');
+        $inputPath = storage_path('app/pdf/input.pdf');
+        $uploadedPdf->move(dirname($inputPath), 'input.pdf');
+
+        // 3. Spracovanie čísel strán
+        $pagesToRemove = $validated['pages'];
+
+        // 4. Zavolanie Python skriptu
+        $outputPath = storage_path('app/pdf/output.pdf');
+        $command = "python3 ../scripts/remove-pages.py $inputPath \"$pagesToRemove\" $outputPath";
+        exec($command . ' 2>&1', $output, $returnCode);
+
+        if ($returnCode !== 0) {
+            return back()->with('error', 'Nepodarilo sa spracovať PDF.');
+        }
+
+        // 5. Stiahnutie výsledku
+        return response()->download($outputPath)->deleteFileAfterSend(true);
+    }
+
+
+    //MERGE PDFs METHODS
+    public function showMergePdfsForm()
+    {
+        return view('pdf.merge-pdfs');
+    }
+
+    public  function processMergePdfs(Request $request)
+    {
+        // 1. Validácia vstupu
+        $validated = $request->validate([
+            'pdfs' => 'required|array',
+            'pdfs.*' => 'file|mimes:pdf|max:10240',
+        ]);
+
+        $pdfFiles = $request->file('pdfs');
+        $inputPaths = [];
+
+        foreach ($pdfFiles as $index => $file) {
+            $filename = "input_" . $index . ".pdf";
+            $path = storage_path("app/pdf/$filename");
+            $file->move(storage_path("app/pdf"), $filename);
+            $inputPaths[] = $path;
+        }
+
+        $outputPath = storage_path('app/pdf/merged_output.pdf');
+        $scriptPath = base_path('scripts/merge-pdfs.py');
+
+        // Zreťazíme cesty k PDF súborom do jedného stringu (oddelené medzerami)
+        $inputFilesStr = implode(' ', $inputPaths);
+
+        $command = "python3 $scriptPath $inputFilesStr $outputPath";
+        exec($command . ' 2>&1', $output, $returnCode);
+
+        if ($returnCode !== 0) {
+            return back()->with('error', 'Zlúčenie PDF súborov zlyhalo.');
+        }
+
+        return response()->download($outputPath)->deleteFileAfterSend(true);
+    }
+
+
+    //PDF TO JPG METHODS
+    public function showPdfToJpgForm()
+    {
+        return view('pdf.pdf-to-jpg');
+    }
+
+    public function processPdfToJpg(Request $request)
+    {
+        // 1. Validácia vstupu
+        $validated = $request->validate([
+            'pdf' => 'required|file|mimes:pdf|max:10240', // max 10 MB
+            'dpi' => 'nullable|integer|min:72|max:300'
+        ]);
+
+        // 2. Uloženie PDF
+        $uploadedPdf = $request->file('pdf');
+        $inputPath = storage_path('app/pdf/input.pdf');
+        $uploadedPdf->move(dirname($inputPath), 'input.pdf');
+
+        // 3. Cesta k výstupnej zložke
+        $outputDir = storage_path('app/pdf/jpg_output');
+        if (!is_dir($outputDir)) {
+            mkdir($outputDir, 0775, true);
+        }
+
+        // 4. DPI (kvalita obrázkov)
+        $dpi = $request->input('dpi', 150);
+
+        // 5. Volanie Python skriptu
+        $scriptPath = base_path('scripts/pdf-to-jpg.py');
+        $command = "python3 $scriptPath $inputPath $outputDir $dpi";
+        exec($command . ' 2>&1', $output, $returnCode);
+
+        if ($returnCode !== 0) {
+            return back()->with('error', 'Konverzia do JPG zlyhala.');
+        }
+
+        // 6. Zbalenie výstupných obrázkov do ZIP
+        $zipPath = storage_path('app/pdf/jpg_images.zip');
+        $zip = new \ZipArchive;
+        if ($zip->open($zipPath, \ZipArchive::CREATE | \ZipArchive::OVERWRITE)) {
+            foreach (glob($outputDir . '/*.jpg') as $file) {
+                $zip->addFile($file, basename($file));
+            }
+            $zip->close();
+        }
+
+        return response()->download($zipPath)->deleteFileAfterSend(true);
+    }
+
+
+    //JPG TO PDF METHODS
+    public function showJpgToPdfForm()
+    {
+        return view('pdf.jpg-to-pdf');
+    }
+
+    public function processJpgToPdf(Request $request)
+    {
+        $validated = $request->validate([
+            'images' => 'required|array',
+            'images.*' => 'file|mimes:jpg,jpeg|max:5120',
+        ]);
+
+        $imageFiles = $request->file('images');
+        $inputPaths = [];
+
+        foreach ($imageFiles as $index => $image) {
+            $filename = "image_" . $index . ".jpg";
+            $path = storage_path("app/pdf/{$filename}");
+            $image->move(storage_path("app/pdf"), $filename);
+            $inputPaths[] = $path;
+        }
+
+        $outputPath = storage_path('app/pdf/combined_output.pdf');
+        $scriptPath = base_path('scripts/jpg-to-pdf.py');
+
+        $inputFilesStr = implode(' ', $inputPaths);
+        $command = "python3 $scriptPath $inputFilesStr $outputPath";
+        exec($command . ' 2>&1', $output, $returnCode);
+
+        if ($returnCode !== 0) {
+            return back()->with('error', 'Konverzia z JPG do PDF zlyhala.');
+        }
+
+        return response()->download($outputPath)->deleteFileAfterSend(true);
+    }
+
+
+//    ROTATE PAGES METHODS
+    public function showRotatePagesForm()
+    {
+        return view('pdf.rotate-pages');
+    }
+
+    public function processRotatePages(Request $request)
+    {
+        $validated = $request->validate([
+            'pdf' => 'required|file|mimes:pdf|max:10240',
+            'pages' => 'required|string',
+            'angle' => 'required|in:90,180,270',
+        ]);
+
+        $uploadedPdf = $request->file('pdf');
+        $inputPath = storage_path('app/pdf/input.pdf');
+        $uploadedPdf->move(dirname($inputPath), 'input.pdf');
+
+        $outputPath = storage_path('app/pdf/rotated_output.pdf');
+
+        //Parametre
+        $pagesToRotate = $validated['pages'];  // napr. "1,3,5"
+        $angle = $validated['angle'];          // napr. 90
+
+        $scriptPath = base_path('scripts/rotate-pages.py');
+        $command = "python3 $scriptPath $inputPath \"$pagesToRotate\" $angle $outputPath";
+        exec($command . ' 2>&1', $output, $returnCode);
+
+        if ($returnCode !== 0) {
+            return back()->with('error', 'Otočenie strán zlyhalo.');
+        }
+
+        return response()->download($outputPath)->deleteFileAfterSend(true);
+    }
+
+
+//    SPLIT PDF METHODS
+    public function showSplitPdfForm()
+    {
+        return view('pdf.split-pdf');
+    }
+
+    public function processSplitPdf(Request $request)
+    {
+        $validated = $request->validate([
+            'pdf' => 'required|file|mimes:pdf|max:10240',
+            'split_size' => 'required|integer|min:1',
+        ]);
+
+        $uploadedPdf = $request->file('pdf');
+        $inputPath = storage_path('app/pdf/input.pdf');
+        $uploadedPdf->move(dirname($inputPath), 'input.pdf');
+
+        $splitSize = $validated['split_size'];
+        $outputDir = storage_path('app/pdf/split_output');
+        if (!is_dir($outputDir)) {
+            mkdir($outputDir, 0775, true);
+        }
+
+        $scriptPath = base_path('scripts/split-pdf.py');
+        $command = "python3 $scriptPath $inputPath $outputDir $splitSize";
+        exec($command . ' 2>&1', $output, $returnCode);
+
+        if ($returnCode !== 0) {
+            return back()->with('error', 'Rozdelenie PDF zlyhalo.');
+        }
+
+        // Zbalíme všetky výsledné PDF súbory do ZIP
+        $zipPath = storage_path('app/pdf/split_files.zip');
+        $zip = new \ZipArchive;
+        if ($zip->open($zipPath, \ZipArchive::CREATE | \ZipArchive::OVERWRITE)) {
+            foreach (glob($outputDir . '/*.pdf') as $file) {
+                $zip->addFile($file, basename($file));
+            }
+            $zip->close();
+        }
+
+        return response()->download($zipPath)->deleteFileAfterSend(true);
+    }
+
+
+}
