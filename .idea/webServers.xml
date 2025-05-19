@@ -2,8 +2,8 @@
 <project version="4">
   <component name="WebServers">
     <option name="servers">
-      <webServer id="9fc83613-5f40-4b8c-aee6-3419aba69afb" name="node70 VPS" url="http://node70.webte.fei.stuba.sk">
-        <fileTransfer accessType="SFTP" host="node70.webte.fei.stuba.sk" port="22" sshConfigId="a31891bc-53f4-4716-af0b-3bade704f4d8" sshConfig="xkubanova@node70.webte.fei.stuba.sk:22 password">
+      <webServer id="9fc83613-5f40-4b8c-aee6-3419aba69afb" name="node70 VPS" url="http://node64.webte.fei.stuba.sk">
+        <fileTransfer rootFolder="/var/www/webte2_skuskove_zadanie" accessType="SFTP" host="node64.webte.fei.stuba.sk" port="22" sshConfigId="4df914aa-10b3-483c-9b3a-37057a147106" sshConfig="xkopilova@node64.webte.fei.stuba.sk:22 password">
           <advancedOptions>
             <advancedOptions dataProtectionLevel="Private" passiveMode="true" shareSSLContext="true" />
           </advancedOptions>
