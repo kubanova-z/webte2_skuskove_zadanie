@@ -2,7 +2,7 @@
 
 @section('content')
     <div class="max-w-2xl mx-auto mt-8 bg-white p-6 shadow rounded">
-        <h2 class="text-xl font-bold mb-4">Odomknúť PDF súbor</h2>
+        <h2 class="text-xl font-bold mb-4">{{ __('messages.unlock_pdf_title') }}</h2>
 
         @if (session('error'))
             <div class="bg-red-100 text-red-800 p-4 rounded mb-4">
@@ -14,17 +14,17 @@
             @csrf
 
             <div class="mb-4">
-                <label class="block font-medium text-gray-700">Chránený PDF súbor:</label>
+                <label class="block font-medium text-gray-700">{{ __('messages.protected_pdf') }}:</label>
                 <input type="file" name="pdf" required class="mt-1 block w-full">
             </div>
 
             <div class="mb-4">
-                <label class="block font-medium text-gray-700">Heslo:</label>
+                <label class="block font-medium text-gray-700">{{ __('messages.protect_pw') }}:</label>
                 <input type="password" name="password" required class="mt-1 block w-full">
             </div>
 
             <button type="submit" class="bg-violet-600 text-white px-4 py-2 rounded hover:bg-violet-700">
-                Odomknúť PDF
+                {{ __('messages.unlock_pdf') }}
             </button>
         </form>
     </div>

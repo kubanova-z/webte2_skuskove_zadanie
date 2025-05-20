@@ -67,6 +67,21 @@ return [
     'split_pdf_title' => 'Rozdeliť PDF',
     'split_pdf_desc' => 'Rozdeľ PDF po 1 alebo viacerých stranách do samostatných súborov.',
 
+    'protect_pdf_title' => 'Zabezpečiť PDF heslom',
+    'protect_pdf_desc'  => 'Nahraj PDF a nastav heslo pre ochranu.',
+
+    'unlock_pdf_title'  => 'Odomknúť PDF',
+    'unlock_pdf_desc'   => 'Zadaj heslo a odstráň ochranu z PDF súboru.',
+
+    'resize_pages_title'=> 'Zmeniť veľkosť strán',
+    'resize_pages_desc' => 'Zmenši alebo zväčši stránky PDF na A4, A5 alebo A6.',
+    
+    'compress_title'       => 'Komprimovať PDF',
+    'compress_desc' => 'Komprimuje PDF na požadovanú veľkosť.',
+
+
+    'compress_choose_file' => 'Vyberte PDF na komprimovanie',
+    'compress_button'      => 'Komprimovať',
     'select_images' => 'Vyber obrázky',
     'convert_to_pdf' => 'Konvertovať do PDF',
     'select_pdfs' => 'Vyber PDF súbory',
@@ -84,5 +99,12 @@ return [
     'split_pdf' => 'Rozdeliť PDF',
     'used_features' => 'Použité funkcionality',
     'none' => 'Žiadne',
+    'pdf_file' => 'PDF súbor',
+    'protect_pdf' => 'Zabezpečiť PDF',
+    'protect_pw' => 'Heslo',
+    'unlock_pdf' => 'Odomknúť PDF',
+    'protected_pdf' => 'Chránený PDF súbor',
+    'resize_pdf' => 'Zmeniť veľkosť strán',
+    'resize_size' => 'Nový formát strany',
 
 ];

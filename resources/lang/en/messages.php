@@ -64,9 +64,26 @@ return [
     'rotate_pages_title' => 'Rotate pages in PDF',
     'rotate_pages_desc' => 'Choose pages that you want to rotate by 90°, 180° or 270°.',
 
+    'protect_pdf_title' => 'Protect PDF',
+    'protect_pdf_desc'  => 'Upload a PDF and set a password to protect it.',
+
+    'unlock_pdf_title'  => 'Unlock PDF',
+    'unlock_pdf_desc'   => 'Enter the password to remove protection from a PDF file.',
+
+    'resize_pages_title'=> 'Resize PDF pages',
+    'resize_pages_desc' => 'Shrink or enlarge PDF pages to A4, A5, or A6.',
+
     'split_pdf_title' => 'Split PDF',
     'split_pdf_desc' => 'Split PDF into multiple separate files.',
 
+    'compress_title'  => 'Compress PDF',
+    'compress_desc' => 'Compress PDF file to reduce its size.',
+
+
+    
+    
+    'compress_choose_file' => 'Choose PDF to compress',
+    'compress_button'      => 'Compress',
     'select_images' => 'Select Images',
     'convert_to_pdf' => 'Convert to PDF',
     'select_pdfs' => 'Select PDFs',
@@ -84,5 +101,12 @@ return [
     'split_pdf' => 'Split PDF',
     'used_features' => 'Used Features',
     'none' => 'None',
+    'pdf_file' => 'PDF File',
+    'protect_pdf' => 'Protect PDF',
+    'protect_pw' => 'Password',
+    'unlock_pdf' => 'Unlock PDF',
+    'protected_pdf' => 'Protected PDF file',
+    'resize_pdf' => 'Resize PDF pages',
+    'resize_size' => 'New page format',
 
 ];

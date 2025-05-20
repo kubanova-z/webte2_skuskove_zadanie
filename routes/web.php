@@ -96,6 +96,9 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/pdf/resize-pages', [PDFController::class, 'showResizePagesForm'])->name('pdf.resize-pages.form');
     Route::post('/pdf/resize-pages', [PDFController::class, 'processResizePages'])->name('pdf.resize-pages.process');
 
+    Route::get('/pdf/compress', [PDFController::class, 'showCompressForm'])->name('pdf.compress.form');
+    Route::post('/pdf/compress', [PDFController::class, 'processCompress'])->name('pdf.compress.process');
+
 
 });
 
