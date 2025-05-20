@@ -278,6 +278,7 @@ class PDFController extends Controller
                 }
             }
         }
+    }
 
 //    PROTECT PDF METHODS
     public function showProtectPdfForm()
