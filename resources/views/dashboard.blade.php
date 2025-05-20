@@ -71,6 +71,12 @@
                 <p class="text-sm text-gray-700 mt-2">Zadaj heslo a odstráň ochranu z PDF súboru.</p>
             </a>
 
+            {{-- FUNCTION - Resize Pages --}}
+            <a href="{{ route('pdf.resize-pages.form') }}" class="block bg-orange-100 border border-orange-300 p-6 rounded-lg shadow hover:bg-orange-200 transition">
+                <h3 class="text-lg font-semibold text-orange-900">Zmeniť veľkosť strán</h3>
+                <p class="text-sm text-gray-700 mt-2">Zmenši alebo zväčši stránky PDF na A4, A5 alebo A6.</p>
+            </a>
+
 
 
 

@@ -93,6 +93,9 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/pdf/unlock-pdf', [PDFController::class, 'showUnlockPdfForm'])->name('pdf.unlock-pdf.form');
     Route::post('/pdf/unlock-pdf', [PDFController::class, 'processUnlockPdf'])->name('pdf.unlock-pdf.process');
 
+    Route::get('/pdf/resize-pages', [PDFController::class, 'showResizePagesForm'])->name('pdf.resize-pages.form');
+    Route::post('/pdf/resize-pages', [PDFController::class, 'processResizePages'])->name('pdf.resize-pages.process');
+
 
 });
 

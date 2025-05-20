@@ -319,5 +319,38 @@ class PDFController extends Controller
 
 
 
+//    UNLOCK PDF METHODS
+    public function showResizePagesForm()
+    {
+        return view('pdf.resize-pages');
+    }
+
+    public function processResizePages(Request $request)
+    {
+        $validated = $request->validate([
+            'pdf' => 'required|file|mimes:pdf|max:10240',
+            'size' => 'required|in:A4,A5,A6',
+        ]);
+
+        $uploadedPdf = $request->file('pdf');
+        $inputPath = storage_path('app/pdf/input.pdf');
+        $uploadedPdf->move(dirname($inputPath), 'input.pdf');
+
+        $size = $validated['size'];
+        $outputPath = storage_path('app/pdf/resized_output.pdf');
+        $scriptPath = base_path('scripts/resize-pages.py');
+
+        $command = "python3 $scriptPath $inputPath $outputPath $size";
+        exec($command . ' 2>&1', $output, $returnCode);
+
+        if ($returnCode !== 0) {
+            return back()->with('error', 'Zmena veľkosti strán zlyhala.');
+        }
+
+        return response()->download($outputPath)->deleteFileAfterSend(true);
+    }
+
+
+
 
 }
