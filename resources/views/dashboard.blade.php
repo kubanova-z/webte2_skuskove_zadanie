@@ -52,6 +52,30 @@
                 <h3 class="text-lg font-semibold text-pink-900">{{ __('messages.split_pdf_title') }}</h3>
                 <p class="text-sm text-gray-700 mt-2">{{ __('messages.split_pdf_desc') }}</p>
             </a>
+
+
+            {{-- FUNCTION - Protect PDF --}}
+            <a href="{{ route('pdf.protect-pdf.form') }}" class="block bg-red-100 border border-red-300 p-6 rounded-lg shadow hover:bg-red-200 transition">
+                <h3 class="text-lg font-semibold text-red-900">Zabezpečiť PDF heslom</h3>
+                <p class="text-sm text-gray-700 mt-2">Nahraj PDF a nastav heslo pre ochranu.</p>
+            </a>
+
+            {{-- FUNCTION - Unlock PDF --}}
+            <a href="{{ route('pdf.unlock-pdf.form') }}" class="block bg-violet-100 border border-violet-300 p-6 rounded-lg shadow hover:bg-violet-200 transition">
+                <h3 class="text-lg font-semibold text-violet-900">Odomknúť PDF</h3>
+                <p class="text-sm text-gray-700 mt-2">Zadaj heslo a odstráň ochranu z PDF súboru.</p>
+            </a>
+
+            {{-- FUNCTION - Resize Pages --}}
+            <a href="{{ route('pdf.resize-pages.form') }}" class="block bg-orange-100 border border-orange-300 p-6 rounded-lg shadow hover:bg-orange-200 transition">
+                <h3 class="text-lg font-semibold text-orange-900">Zmeniť veľkosť strán</h3>
+                <p class="text-sm text-gray-700 mt-2">Zmenši alebo zväčši stránky PDF na A4, A5 alebo A6.</p>
+            </a>
+
+
+
+
+
         </div>
     </div>
 @endsection

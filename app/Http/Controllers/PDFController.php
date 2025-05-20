@@ -156,7 +156,7 @@ class PDFController extends Controller
 
         foreach ($imageFiles as $index => $image) {
             $filename = "image_" . $index . ".jpg";
-            $path = storage_path("app/pdf/{$filename}");
+            $path = storage_path("app/pdf/$filename");
             $image->move(storage_path("app/pdf"), $filename);
             $inputPaths[] = $path;
         }
@@ -259,6 +259,7 @@ class PDFController extends Controller
     }
 
 
+
     //Funkcia na sledovanie pouzitych funkcionalit
     protected function trackFeatureUsage(string $feature): void
     {
@@ -277,7 +278,108 @@ class PDFController extends Controller
                 }
             }
         }
+
+//    PROTECT PDF METHODS
+    public function showProtectPdfForm()
+    {
+        return view('pdf.protect-pdf');
     }
+
+    public function processProtectPdf(Request $request)
+    {
+        $validated = $request->validate([
+            'pdf' => 'required|file|mimes:pdf|max:10240',
+            'password' => 'required|string|min:4',
+        ]);
+
+        $uploadedPdf = $request->file('pdf');
+        $inputPath = storage_path('app/pdf/input.pdf');
+        $uploadedPdf->move(dirname($inputPath), 'input.pdf');
+
+        $password = $validated['password'];
+        $outputPath = storage_path('app/pdf/protected_output.pdf');
+        $scriptPath = base_path('scripts/protect-pdf.py');
+
+        $command = "python3 $scriptPath $inputPath $outputPath \"$password\"";
+        exec($command . ' 2>&1', $output, $returnCode);
+
+        if ($returnCode !== 0) {
+            return back()->with('error', 'Zabezpečenie PDF zlyhalo.');
+        }
+
+        return response()->download($outputPath)->deleteFileAfterSend(true);
+
+    }
+
+
+
+
+
+//    UNLOCK PDF METHODS
+    public function showUnlockPdfForm()
+    {
+        return view('pdf.unlock-pdf');
+    }
+
+    public function processUnlockPdf(Request $request)
+    {
+        $validated = $request->validate([
+            'pdf' => 'required|file|mimes:pdf|max:10240',
+            'password' => 'required|string|min:1',
+        ]);
+
+        $uploadedPdf = $request->file('pdf');
+        $inputPath = storage_path('app/pdf/locked_input.pdf');
+        $uploadedPdf->move(dirname($inputPath), 'locked_input.pdf');
+
+        $password = $validated['password'];
+        $outputPath = storage_path('app/pdf/unlocked_output.pdf');
+        $scriptPath = base_path('scripts/unlock-pdf.py');
+
+        $command = "python3 $scriptPath $inputPath $outputPath \"$password\"";
+        exec($command . ' 2>&1', $output, $returnCode);
+
+        if ($returnCode !== 0) {
+            return back()->with('error', 'Odomknutie PDF zlyhalo. Skontroluj heslo alebo typ súboru.');
+        }
+
+        return response()->download($outputPath)->deleteFileAfterSend(true);
+    }
+
+
+
+//    UNLOCK PDF METHODS
+    public function showResizePagesForm()
+    {
+        return view('pdf.resize-pages');
+    }
+
+    public function processResizePages(Request $request)
+    {
+        $validated = $request->validate([
+            'pdf' => 'required|file|mimes:pdf|max:10240',
+            'size' => 'required|in:A4,A5,A6',
+        ]);
+
+        $uploadedPdf = $request->file('pdf');
+        $inputPath = storage_path('app/pdf/input.pdf');
+        $uploadedPdf->move(dirname($inputPath), 'input.pdf');
+
+        $size = $validated['size'];
+        $outputPath = storage_path('app/pdf/resized_output.pdf');
+        $scriptPath = base_path('scripts/resize-pages.py');
+
+        $command = "python3 $scriptPath $inputPath $outputPath $size";
+        exec($command . ' 2>&1', $output, $returnCode);
+
+        if ($returnCode !== 0) {
+            return back()->with('error', 'Zmena veľkosti strán zlyhala.');
+        }
+
+        return response()->download($outputPath)->deleteFileAfterSend(true);
+    }
+
+
 
 
 
