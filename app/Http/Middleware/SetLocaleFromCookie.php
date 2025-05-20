@@ -12,16 +12,13 @@ class SetLocaleFromCookie
     {
 
         $locale = $request->cookie('locale', config('app.locale'));
-
-        Log::info('SetLocaleFromCookie middleware is running', [
-            'cookie' => $locale,
-        ]);
+        
 
         if (in_array($locale, ['en', 'sk'])) {
             App::setLocale($locale);
             Log::info('App locale set to', ['locale' => App::getLocale()]);
         }
-        
+
 
         return $next($request);
     }
