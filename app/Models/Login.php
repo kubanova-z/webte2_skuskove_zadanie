@@ -14,6 +14,7 @@ class Login extends Model
     ];
     protected $casts = [
         'login_time' => 'datetime',
+        'used_features' => 'array',
     ];
 
 

@@ -6,6 +6,8 @@ use App\Http\Controllers\LoginHistoryController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PDFController;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Cookie;
 
 // Public routes
 Route::get('/', function () {
@@ -41,6 +43,19 @@ Route::get('/change-password', function () {
 
 Route::put('/update-password', [ProfileController::class, 'updatePassword'])->name('password.update');
 
+//Language change
+Route::get('/lang/{locale}', function ($locale) {
+    if (! in_array($locale, ['en', 'sk'])) {
+        abort(400);
+    }
+
+    Cookie::queue('locale', $locale, 60 * 24 * 30); // auto-encrypted
+
+    return redirect()->back();
+})->name('lang.switch');
+
+
+
 
 // Authenticated routes
 Route::middleware(['auth'])->group(function () {
@@ -71,6 +86,16 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('/pdf/split-pdf', [PDFController::class, 'showSplitPdfForm'])->name('pdf.split-pdf.form');
     Route::post('/pdf/split-pdf', [PDFController::class, 'processSplitPdf'])->name('pdf.split-pdf.process');
+
+    Route::get('/pdf/protect-pdf', [PDFController::class, 'showProtectPdfForm'])->name('pdf.protect-pdf.form');
+    Route::post('/pdf/protect-pdf', [PDFController::class, 'processProtectPdf'])->name('pdf.protect-pdf.process');
+
+    Route::get('/pdf/unlock-pdf', [PDFController::class, 'showUnlockPdfForm'])->name('pdf.unlock-pdf.form');
+    Route::post('/pdf/unlock-pdf', [PDFController::class, 'processUnlockPdf'])->name('pdf.unlock-pdf.process');
+
+    Route::get('/pdf/resize-pages', [PDFController::class, 'showResizePagesForm'])->name('pdf.resize-pages.form');
+    Route::post('/pdf/resize-pages', [PDFController::class, 'processResizePages'])->name('pdf.resize-pages.process');
+
 
 });
 

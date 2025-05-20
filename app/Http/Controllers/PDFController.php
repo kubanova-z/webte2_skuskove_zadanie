@@ -14,6 +14,7 @@ class PDFController extends Controller
 
     public function processRemovePages(Request $request)
     {
+        $this->trackFeatureUsage('remove-pages');
         // 1. Validácia vstupu
         $validated = $request->validate([
             'pdf' => 'required|file|mimes:pdf|max:10240', // max 10 MB
@@ -50,6 +51,7 @@ class PDFController extends Controller
 
     public  function processMergePdfs(Request $request)
     {
+        $this->trackFeatureUsage('merge-pdf');
         // 1. Validácia vstupu
         $validated = $request->validate([
             'pdfs' => 'required|array',
@@ -91,6 +93,7 @@ class PDFController extends Controller
 
     public function processPdfToJpg(Request $request)
     {
+        $this->trackFeatureUsage('pdf-to-jpg');
         // 1. Validácia vstupu
         $validated = $request->validate([
             'pdf' => 'required|file|mimes:pdf|max:10240', // max 10 MB
@@ -142,6 +145,7 @@ class PDFController extends Controller
 
     public function processJpgToPdf(Request $request)
     {
+        $this->trackFeatureUsage('jpg-to-pdf');
         $validated = $request->validate([
             'images' => 'required|array',
             'images.*' => 'file|mimes:jpg,jpeg|max:5120',
@@ -152,7 +156,7 @@ class PDFController extends Controller
 
         foreach ($imageFiles as $index => $image) {
             $filename = "image_" . $index . ".jpg";
-            $path = storage_path("app/pdf/{$filename}");
+            $path = storage_path("app/pdf/$filename");
             $image->move(storage_path("app/pdf"), $filename);
             $inputPaths[] = $path;
         }
@@ -180,6 +184,7 @@ class PDFController extends Controller
 
     public function processRotatePages(Request $request)
     {
+        $this->trackFeatureUsage('rotate-pdf');
         $validated = $request->validate([
             'pdf' => 'required|file|mimes:pdf|max:10240',
             'pages' => 'required|string',
@@ -216,6 +221,7 @@ class PDFController extends Controller
 
     public function processSplitPdf(Request $request)
     {
+        $this->trackFeatureUsage('split-pdf');
         $validated = $request->validate([
             'pdf' => 'required|file|mimes:pdf|max:10240',
             'split_size' => 'required|integer|min:1',
@@ -251,6 +257,131 @@ class PDFController extends Controller
 
         return response()->download($zipPath)->deleteFileAfterSend(true);
     }
+
+
+
+    //Funkcia na sledovanie pouzitych funkcionalit
+    protected function trackFeatureUsage(string $feature): void
+    {
+        if (auth()->check()) {
+            $login = \App\Models\Login::where('user_id', auth()->id())
+                ->latest('login_time')
+                ->first();
+
+            if ($login) {
+                $features = $login->used_features ?? [];
+
+                if (!in_array($feature, $features)) {
+                    $features[] = $feature;
+                    $login->used_features = $features;
+                    $login->save();
+                }
+            }
+        }
+    }
+
+//    PROTECT PDF METHODS
+    public function showProtectPdfForm()
+    {
+        return view('pdf.protect-pdf');
+    }
+
+    public function processProtectPdf(Request $request)
+    {
+        $validated = $request->validate([
+            'pdf' => 'required|file|mimes:pdf|max:10240',
+            'password' => 'required|string|min:4',
+        ]);
+
+        $uploadedPdf = $request->file('pdf');
+        $inputPath = storage_path('app/pdf/input.pdf');
+        $uploadedPdf->move(dirname($inputPath), 'input.pdf');
+
+        $password = $validated['password'];
+        $outputPath = storage_path('app/pdf/protected_output.pdf');
+        $scriptPath = base_path('scripts/protect-pdf.py');
+
+        $command = "python3 $scriptPath $inputPath $outputPath \"$password\"";
+        exec($command . ' 2>&1', $output, $returnCode);
+
+        if ($returnCode !== 0) {
+            return back()->with('error', 'Zabezpečenie PDF zlyhalo.');
+        }
+
+        return response()->download($outputPath)->deleteFileAfterSend(true);
+
+    }
+
+
+
+
+
+//    UNLOCK PDF METHODS
+    public function showUnlockPdfForm()
+    {
+        return view('pdf.unlock-pdf');
+    }
+
+    public function processUnlockPdf(Request $request)
+    {
+        $validated = $request->validate([
+            'pdf' => 'required|file|mimes:pdf|max:10240',
+            'password' => 'required|string|min:1',
+        ]);
+
+        $uploadedPdf = $request->file('pdf');
+        $inputPath = storage_path('app/pdf/locked_input.pdf');
+        $uploadedPdf->move(dirname($inputPath), 'locked_input.pdf');
+
+        $password = $validated['password'];
+        $outputPath = storage_path('app/pdf/unlocked_output.pdf');
+        $scriptPath = base_path('scripts/unlock-pdf.py');
+
+        $command = "python3 $scriptPath $inputPath $outputPath \"$password\"";
+        exec($command . ' 2>&1', $output, $returnCode);
+
+        if ($returnCode !== 0) {
+            return back()->with('error', 'Odomknutie PDF zlyhalo. Skontroluj heslo alebo typ súboru.');
+        }
+
+        return response()->download($outputPath)->deleteFileAfterSend(true);
+    }
+
+
+
+//    UNLOCK PDF METHODS
+    public function showResizePagesForm()
+    {
+        return view('pdf.resize-pages');
+    }
+
+    public function processResizePages(Request $request)
+    {
+        $validated = $request->validate([
+            'pdf' => 'required|file|mimes:pdf|max:10240',
+            'size' => 'required|in:A4,A5,A6',
+        ]);
+
+        $uploadedPdf = $request->file('pdf');
+        $inputPath = storage_path('app/pdf/input.pdf');
+        $uploadedPdf->move(dirname($inputPath), 'input.pdf');
+
+        $size = $validated['size'];
+        $outputPath = storage_path('app/pdf/resized_output.pdf');
+        $scriptPath = base_path('scripts/resize-pages.py');
+
+        $command = "python3 $scriptPath $inputPath $outputPath $size";
+        exec($command . ' 2>&1', $output, $returnCode);
+
+        if ($returnCode !== 0) {
+            return back()->with('error', 'Zmena veľkosti strán zlyhala.');
+        }
+
+        return response()->download($outputPath)->deleteFileAfterSend(true);
+    }
+
+
+
 
 
 }
