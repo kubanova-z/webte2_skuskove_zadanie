@@ -65,6 +65,14 @@
                 <p class="text-sm text-gray-700 mt-2">Nahraj PDF a nastav heslo pre ochranu.</p>
             </a>
 
+            {{-- FUNCTION - Unlock PDF --}}
+            <a href="{{ route('pdf.unlock-pdf.form') }}" class="block bg-violet-100 border border-violet-300 p-6 rounded-lg shadow hover:bg-violet-200 transition">
+                <h3 class="text-lg font-semibold text-violet-900">Odomknúť PDF</h3>
+                <p class="text-sm text-gray-700 mt-2">Zadaj heslo a odstráň ochranu z PDF súboru.</p>
+            </a>
+
+
+
 
         </div>
 

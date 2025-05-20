@@ -90,6 +90,10 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/pdf/protect-pdf', [PDFController::class, 'showProtectPdfForm'])->name('pdf.protect-pdf.form');
     Route::post('/pdf/protect-pdf', [PDFController::class, 'processProtectPdf'])->name('pdf.protect-pdf.process');
 
+    Route::get('/pdf/unlock-pdf', [PDFController::class, 'showUnlockPdfForm'])->name('pdf.unlock-pdf.form');
+    Route::post('/pdf/unlock-pdf', [PDFController::class, 'processUnlockPdf'])->name('pdf.unlock-pdf.process');
+
+
 });
 
 require __DIR__.'/auth.php';

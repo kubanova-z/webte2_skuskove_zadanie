@@ -152,7 +152,7 @@ class PDFController extends Controller
 
         foreach ($imageFiles as $index => $image) {
             $filename = "image_" . $index . ".jpg";
-            $path = storage_path("app/pdf/{$filename}");
+            $path = storage_path("app/pdf/$filename");
             $image->move(storage_path("app/pdf"), $filename);
             $inputPaths[] = $path;
         }
@@ -283,6 +283,41 @@ class PDFController extends Controller
 
         return response()->download($outputPath)->deleteFileAfterSend(true);
     }
+
+
+
+//    UNLOCK PDF METHODS
+    public function showUnlockPdfForm()
+    {
+        return view('pdf.unlock-pdf');
+    }
+
+    public function processUnlockPdf(Request $request)
+    {
+        $validated = $request->validate([
+            'pdf' => 'required|file|mimes:pdf|max:10240',
+            'password' => 'required|string|min:1',
+        ]);
+
+        $uploadedPdf = $request->file('pdf');
+        $inputPath = storage_path('app/pdf/locked_input.pdf');
+        $uploadedPdf->move(dirname($inputPath), 'locked_input.pdf');
+
+        $password = $validated['password'];
+        $outputPath = storage_path('app/pdf/unlocked_output.pdf');
+        $scriptPath = base_path('scripts/unlock-pdf.py');
+
+        $command = "python3 $scriptPath $inputPath $outputPath \"$password\"";
+        exec($command . ' 2>&1', $output, $returnCode);
+
+        if ($returnCode !== 0) {
+            return back()->with('error', 'Odomknutie PDF zlyhalo. Skontroluj heslo alebo typ súboru.');
+        }
+
+        return response()->download($outputPath)->deleteFileAfterSend(true);
+    }
+
+
 
 
 }
