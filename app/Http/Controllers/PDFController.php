@@ -50,6 +50,7 @@ class PDFController extends Controller
 
     public  function processMergePdfs(Request $request)
     {
+        $this->trackFeatureUsage('merge-pdf');
         // 1. Validácia vstupu
         $validated = $request->validate([
             'pdfs' => 'required|array',
@@ -91,6 +92,7 @@ class PDFController extends Controller
 
     public function processPdfToJpg(Request $request)
     {
+        $this->trackFeatureUsage('pdf-to-jpg');
         // 1. Validácia vstupu
         $validated = $request->validate([
             'pdf' => 'required|file|mimes:pdf|max:10240', // max 10 MB
@@ -142,6 +144,7 @@ class PDFController extends Controller
 
     public function processJpgToPdf(Request $request)
     {
+        $this->trackFeatureUsage('jpg-to-pdf');
         $validated = $request->validate([
             'images' => 'required|array',
             'images.*' => 'file|mimes:jpg,jpeg|max:5120',
@@ -180,6 +183,7 @@ class PDFController extends Controller
 
     public function processRotatePages(Request $request)
     {
+        $this->trackFeatureUsage('rotate-pdf');
         $validated = $request->validate([
             'pdf' => 'required|file|mimes:pdf|max:10240',
             'pages' => 'required|string',
@@ -216,6 +220,7 @@ class PDFController extends Controller
 
     public function processSplitPdf(Request $request)
     {
+        $this->trackFeatureUsage('split-pdf');
         $validated = $request->validate([
             'pdf' => 'required|file|mimes:pdf|max:10240',
             'split_size' => 'required|integer|min:1',
@@ -251,6 +256,28 @@ class PDFController extends Controller
 
         return response()->download($zipPath)->deleteFileAfterSend(true);
     }
+
+
+    //Funkcia na sledovanie pouzitych funkcionalit
+    protected function trackFeatureUsage(string $feature): void
+    {
+        if (auth()->check()) {
+            $login = \App\Models\Login::where('user_id', auth()->id())
+                ->latest('login_time')
+                ->first();
+
+            if ($login) {
+                $features = $login->used_features ?? [];
+
+                if (!in_array($feature, $features)) {
+                    $features[] = $feature;
+                    $login->used_features = $features;
+                    $login->save();
+                }
+            }
+        }
+    }
+
 
 
 }

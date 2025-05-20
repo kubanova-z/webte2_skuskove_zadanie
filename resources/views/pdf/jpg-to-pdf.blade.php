@@ -14,12 +14,12 @@
             @csrf
 
             <div class="mb-4">
-                <label class="block font-medium text-gray-700">Vyber obrázky (.jpg):</label>
+                <label class="block font-medium text-gray-700">{{ __('messages.select_images') }}</label>
                 <input type="file" name="images[]" multiple required accept=".jpg,.jpeg" class="mt-1 block w-full">
             </div>
 
             <button type="submit" class="bg-purple-600 text-white px-4 py-2 rounded hover:bg-purple-700">
-                Konvertovať do PDF
+                {{ __('messages.convert_to_pdf') }}
             </button>
         </form>
     </div>

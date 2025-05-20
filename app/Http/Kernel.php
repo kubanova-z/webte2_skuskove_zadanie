@@ -28,9 +28,7 @@ class Kernel extends HttpKernel
             \App\Http\Middleware\VerifyCsrfToken::class,
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
 
-            // ✅ Place SetLocale *after* StartSession so session is available
-            \App\Http\Middleware\SetLocaleFromCookie::class,
-
+            \App\Http\Middleware\CrashTest::class,
         ],
 
 

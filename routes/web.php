@@ -49,10 +49,30 @@ Route::get('/lang/{locale}', function ($locale) {
         abort(400);
     }
 
-    // Optional: App::setLocale($locale); // Not strictly needed now
-    return redirect()->back()->withCookie(cookie('locale', $locale, 60 * 24 * 30));
+    Cookie::queue('locale', $locale, 60 * 24 * 30); // auto-encrypted
+
+    return redirect()->back();
 })->name('lang.switch');
 
+
+Route::get('/check-locale', function (\Illuminate\Http\Request $request) {
+    $rawCookie = $_COOKIE['locale'] ?? 'not set';
+    $queuedCookie = $request->cookie('locale', 'not found');
+    $currentLocale = App::getLocale();
+
+    return response()->json([
+        'raw_cookie' => $rawCookie,
+        'request_cookie' => $queuedCookie,
+        'app_locale' => $currentLocale,
+    ]);
+});
+
+Route::get('/debug-locale', function (\Illuminate\Http\Request $request) {
+    return response()->json([
+        'request_cookie' => $request->cookie('locale'),
+        'app_locale' => app()->getLocale(),
+    ]);
+});
 
 
 
