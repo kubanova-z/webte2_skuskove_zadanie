@@ -14,6 +14,7 @@ class PDFController extends Controller
 
     public function processRemovePages(Request $request)
     {
+        $this->trackFeatureUsage('remove-pages');
         // 1. Validácia vstupu
         $validated = $request->validate([
             'pdf' => 'required|file|mimes:pdf|max:10240', // max 10 MB

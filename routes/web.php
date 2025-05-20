@@ -55,26 +55,6 @@ Route::get('/lang/{locale}', function ($locale) {
 })->name('lang.switch');
 
 
-Route::get('/check-locale', function (\Illuminate\Http\Request $request) {
-    $rawCookie = $_COOKIE['locale'] ?? 'not set';
-    $queuedCookie = $request->cookie('locale', 'not found');
-    $currentLocale = App::getLocale();
-
-    return response()->json([
-        'raw_cookie' => $rawCookie,
-        'request_cookie' => $queuedCookie,
-        'app_locale' => $currentLocale,
-    ]);
-});
-
-Route::get('/debug-locale', function (\Illuminate\Http\Request $request) {
-    return response()->json([
-        'request_cookie' => $request->cookie('locale'),
-        'app_locale' => app()->getLocale(),
-    ]);
-});
-
-
 
 
 // Authenticated routes
