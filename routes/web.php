@@ -87,6 +87,9 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/pdf/split-pdf', [PDFController::class, 'showSplitPdfForm'])->name('pdf.split-pdf.form');
     Route::post('/pdf/split-pdf', [PDFController::class, 'processSplitPdf'])->name('pdf.split-pdf.process');
 
+    Route::get('/pdf/protect-pdf', [PDFController::class, 'showProtectPdfForm'])->name('pdf.protect-pdf.form');
+    Route::post('/pdf/protect-pdf', [PDFController::class, 'processProtectPdf'])->name('pdf.protect-pdf.process');
+
 });
 
 require __DIR__.'/auth.php';

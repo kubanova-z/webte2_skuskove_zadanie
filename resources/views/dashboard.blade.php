@@ -59,6 +59,12 @@
                 <p class="text-sm text-gray-700 mt-2">Rozdeľ PDF po 1 alebo viacerých stranách do samostatných súborov.</p>
             </a>
 
+            {{-- FUNCTION - Protect PDF --}}
+            <a href="{{ route('pdf.protect-pdf.form') }}" class="block bg-red-100 border border-red-300 p-6 rounded-lg shadow hover:bg-red-200 transition">
+                <h3 class="text-lg font-semibold text-red-900">Zabezpečiť PDF heslom</h3>
+                <p class="text-sm text-gray-700 mt-2">Nahraj PDF a nastav heslo pre ochranu.</p>
+            </a>
+
 
         </div>
 

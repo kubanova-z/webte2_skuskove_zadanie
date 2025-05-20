@@ -253,4 +253,36 @@ class PDFController extends Controller
     }
 
 
+//    PROTECT PDF METHODS
+    public function showProtectPdfForm()
+    {
+        return view('pdf.protect-pdf');
+    }
+
+    public function processProtectPdf(Request $request)
+    {
+        $validated = $request->validate([
+            'pdf' => 'required|file|mimes:pdf|max:10240',
+            'password' => 'required|string|min:4',
+        ]);
+
+        $uploadedPdf = $request->file('pdf');
+        $inputPath = storage_path('app/pdf/input.pdf');
+        $uploadedPdf->move(dirname($inputPath), 'input.pdf');
+
+        $password = $validated['password'];
+        $outputPath = storage_path('app/pdf/protected_output.pdf');
+        $scriptPath = base_path('scripts/protect-pdf.py');
+
+        $command = "python3 $scriptPath $inputPath $outputPath \"$password\"";
+        exec($command . ' 2>&1', $output, $returnCode);
+
+        if ($returnCode !== 0) {
+            return back()->with('error', 'Zabezpečenie PDF zlyhalo.');
+        }
+
+        return response()->download($outputPath)->deleteFileAfterSend(true);
+    }
+
+
 }
