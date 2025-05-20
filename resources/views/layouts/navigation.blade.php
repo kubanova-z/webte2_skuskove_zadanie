@@ -13,16 +13,42 @@
                 <!-- Navigation Links -->
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
                     <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
-                        {{ __('Dashboard') }}
+                        {{ __('messages.dashboard') }}
                     </x-nav-link>
                     <x-nav-link :href="route('user-guide')" :active="request()->routeIs('user-guide')">
-                        {{ __('User Guide') }}
+                        {{ __('messages.user_guide') }}
                     </x-nav-link>
                 </div>
             </div>
 
-            <!-- Settings Dropdown -->
-            <div class="hidden sm:flex sm:items-center sm:ms-6">
+            <!-- Settings & Language Dropdowns -->
+            <div class="hidden sm:flex sm:items-center sm:ms-6 space-x-4">
+
+                <!-- Language Dropdown -->
+                <x-dropdown align="right" width="36">
+                    <x-slot name="trigger">
+                        <button class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 bg-white hover:text-gray-700 focus:outline-none transition ease-in-out duration-150">
+                            🌐 {{ strtoupper(app()->getLocale()) }}
+                            
+
+
+                            <svg class="ms-2 h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                                <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.44l3.71-4.21a.75.75 0 111.08 1.04l-4.25 4.83a.75.75 0 01-1.08 0L5.25 8.27a.75.75 0 01-.02-1.06z" clip-rule="evenodd" />
+                            </svg>
+                        </button>
+                    </x-slot>
+
+                    <x-slot name="content">
+                        <x-dropdown-link :href="route('lang.switch', 'en')">
+                           English
+                        </x-dropdown-link>
+                        <x-dropdown-link :href="route('lang.switch', 'sk')">
+                            Slovenčina
+                        </x-dropdown-link>
+                    </x-slot>
+                </x-dropdown>
+
+                <!-- User Dropdown -->
                 <x-dropdown align="right" width="48">
                     <x-slot name="trigger">
                         <button class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 bg-white hover:text-gray-700 focus:outline-none transition ease-in-out duration-150">
@@ -37,26 +63,20 @@
                     </x-slot>
 
                     <x-slot name="content">
-                        <!-- Change Password -->
                         <x-dropdown-link :href="route('change-password')">
-                            {{ __('Change Password') }}
+                            {{ __('messages.change_password') }}
                         </x-dropdown-link>
 
-
-
-                        <!-- Log Out -->
                         <form method="POST" action="{{ route('logout') }}">
                             @csrf
                             <x-dropdown-link :href="route('logout')"
-                                             onclick="event.preventDefault();
-                                 this.closest('form').submit();">
-                                {{ __('Log Out') }}
+                                             onclick="event.preventDefault(); this.closest('form').submit();">
+                                {{ __('messages.logout') }}
                             </x-dropdown-link>
                         </form>
                     </x-slot>
                 </x-dropdown>
             </div>
-
 
             <!-- Hamburger -->
             <div class="-me-2 flex items-center sm:hidden">
@@ -74,7 +94,7 @@
     <div :class="{'block': open, 'hidden': ! open}" class="hidden sm:hidden">
         <div class="pt-2 pb-3 space-y-1">
             <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
-                {{ __('Dashboard') }}
+                {{ __('messages.dashboard') }}
             </x-responsive-nav-link>
         </div>
 
@@ -94,7 +114,7 @@
 
                 <!-- Change Password link -->
                 <x-responsive-nav-link :href="route('profile.edit')">
-                    {{ __('Change Password') }}
+                    {{ __('messages.change_password') }}
                 </x-responsive-nav-link>
 
                 <!-- Log Out link -->
@@ -104,7 +124,7 @@
                     <x-responsive-nav-link :href="route('logout')"
                                            onclick="event.preventDefault();
                         this.closest('form').submit();">
-                        {{ __('Log Out') }}
+                        {{ __('messages.logout') }}
                     </x-responsive-nav-link>
                 </form>
 

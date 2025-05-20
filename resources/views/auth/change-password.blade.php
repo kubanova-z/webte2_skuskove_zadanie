@@ -4,19 +4,19 @@
     <div class="py-12">
         <div class="max-w-xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white p-6 shadow sm:rounded-lg">
-                <h2 class="text-2xl font-bold mb-4">Change Password</h2>
+                <h2 class="text-2xl font-bold mb-4">Zmena hesla</h2>
 
                 <form method="POST" action="{{ route('password.update') }}">
                     @csrf
                     @method('PUT')
 
-                    <label class="block font-medium text-sm text-gray-700 mt-2">Current Password</label>
+                    <label class="block font-medium text-sm text-gray-700 mt-2">Aktuálne heslo</label>
                     <input name="current_password" type="password" class="block w-full mt-1 border rounded px-3 py-2" required>
 
                     {{--<label class="block font-medium text-sm text-gray-700 mt-4">New Password</label>
                     <input name="password" type="password" class="block w-full mt-1 border rounded px-3 py-2" required>--}}
                     <div class="relative mt-4">
-                        <label for="password" class="block font-medium text-sm text-gray-700">New Password</label>
+                        <label for="password" class="block font-medium text-sm text-gray-700">Nové heslo</label>
 
                         <input id="password" name="password" type="password"
                                class="block w-full mt-1 border rounded px-3 py-2 pr-10 focus:ring focus:ring-blue-300"
@@ -36,7 +36,7 @@
                     <input name="password_confirmation" type="password" class="block w-full mt-1 border rounded px-3 py-2" required>--}}
 
                     <div class="relative mt-4">
-                        <label for="password_confirmation" class="block font-medium text-sm text-gray-700">Confirm Password</label>
+                        <label for="password_confirmation" class="block font-medium text-sm text-gray-700">Potvrdiť heslo</label>
                         <input id="password_confirmation" name="password_confirmation" type="password"
                                class="block w-full mt-1 border rounded px-3 py-2 pr-10 focus:ring focus:ring-blue-300"
                                required>
@@ -53,13 +53,13 @@
 
                     <button type="submit"
                             class="mt-6 bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded">
-                        Save
+                        Uložiť
                     </button>
 
                     <button type="button"
                             onclick="generatePassword()"
                             class="mb-4 bg-gray-300 hover:bg-gray-400 text-gray-800 font-semibold py-2 px-4 rounded shadow">
-                        Generate Strong Password
+                        Vygenerovať silné heslo
                     </button>
 
                 </form>

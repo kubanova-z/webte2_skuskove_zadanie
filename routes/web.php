@@ -6,6 +6,8 @@ use App\Http\Controllers\LoginHistoryController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PDFController;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Cookie;
 
 // Public routes
 Route::get('/', function () {
@@ -40,6 +42,19 @@ Route::get('/change-password', function () {
 })->middleware(['auth'])->name('change-password');
 
 Route::put('/update-password', [ProfileController::class, 'updatePassword'])->name('password.update');
+
+//Language change
+Route::get('/lang/{locale}', function ($locale) {
+    if (! in_array($locale, ['en', 'sk'])) {
+        abort(400);
+    }
+
+    // Optional: App::setLocale($locale); // Not strictly needed now
+    return redirect()->back()->withCookie(cookie('locale', $locale, 60 * 24 * 30));
+})->name('lang.switch');
+
+
+
 
 
 // Authenticated routes
