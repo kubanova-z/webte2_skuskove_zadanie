@@ -14,6 +14,9 @@
                     {{ __('messages.view_login_history') }}
                 </a>
             @endif
+            <a href="{{ url('api/documentation') }}" class="…">
+                API Docs
+                </a>
         </div>
 
         <div class="bg-white p-8 shadow rounded-lg">
