@@ -14,17 +14,17 @@
             @csrf
 
             <div class="mb-4">
-                <label class="block font-medium text-gray-700">{{ __('messages.protected_pdf') }}:</label>
+                <label class="block font-medium text-gray-700">Chránený PDF súbor:</label>
                 <input type="file" name="pdf" required class="mt-1 block w-full">
             </div>
 
             <div class="mb-4">
-                <label class="block font-medium text-gray-700">{{ __('messages.protect_pw') }}:</label>
+                <label class="block font-medium text-gray-700">Heslo:</label>
                 <input type="password" name="password" required class="mt-1 block w-full">
             </div>
 
             <button type="submit" class="bg-violet-600 text-white px-4 py-2 rounded hover:bg-violet-700">
-                {{ __('messages.unlock_pdf') }}
+                Odomknúť PDF
             </button>
         </form>
     </div>

@@ -4,7 +4,7 @@ return [
 
     // General
     'welcome' => 'Vitajte v aplikácii!',
-    'dashboard' => 'Nástenka',
+    'dashboard' => 'Menu',
     'logout' => 'Odhlásiť sa',
     'login' => 'Prihlásiť sa',
     'register' => 'Registrovať sa',
@@ -99,12 +99,5 @@ return [
     'split_pdf' => 'Rozdeliť PDF',
     'used_features' => 'Použité funkcionality',
     'none' => 'Žiadne',
-    'pdf_file' => 'PDF súbor',
-    'protect_pdf' => 'Zabezpečiť PDF',
-    'protect_pw' => 'Heslo',
-    'unlock_pdf' => 'Odomknúť PDF',
-    'protected_pdf' => 'Chránený PDF súbor',
-    'resize_pdf' => 'Zmeniť veľkosť strán',
-    'resize_size' => 'Nový formát strany',
 
 ];

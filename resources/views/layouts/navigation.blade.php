@@ -97,6 +97,10 @@
             <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                 {{ __('messages.dashboard') }}
             </x-responsive-nav-link>
+
+            <x-responsive-nav-link :href="route('user-guide')" :active="request()->routeIs('user-guide')">
+                {{ __('messages.user_guide') }}
+            </x-responsive-nav-link>
         </div>
 
         <!-- Responsive Settings Options -->

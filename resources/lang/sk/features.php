@@ -7,8 +7,4 @@ return [
     'jpg-to-pdf' => 'Konverzia JPG na PDF',
     'rotate-pages' => 'Otáčanie strán PDF',
     'split-pdf' => 'Rozdelenie PDF na časti',
-     'protect-pdf'    => 'Zabezpečiť PDF heslom',
-    'unlock-pdf'     => 'Odomknúť PDF',
-    'resize-pages'   => 'Zmeniť veľkosť strán',
-    'compress-pdf'   => 'Komprimovanie PDF',
 ];

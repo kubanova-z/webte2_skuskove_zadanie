@@ -19,12 +19,12 @@
             </div>
 
             <div class="mb-4">
-                <label class="block font-medium text-gray-700">{{ __('messages.protect_pw') }}:</label>
+                <label class="block font-medium text-gray-700">Heslo:</label>
                 <input type="password" name="password" required class="mt-1 block w-full">
             </div>
 
             <button type="submit" class="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700">
-                {{ __('messages.protect_pdf') }}
+                Zabezpečiť PDF
             </button>
         </form>
     </div>

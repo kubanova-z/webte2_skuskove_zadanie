@@ -101,12 +101,5 @@ return [
     'split_pdf' => 'Split PDF',
     'used_features' => 'Used Features',
     'none' => 'None',
-    'pdf_file' => 'PDF File',
-    'protect_pdf' => 'Protect PDF',
-    'protect_pw' => 'Password',
-    'unlock_pdf' => 'Unlock PDF',
-    'protected_pdf' => 'Protected PDF file',
-    'resize_pdf' => 'Resize PDF pages',
-    'resize_size' => 'New page format',
 
 ];

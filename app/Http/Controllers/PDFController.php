@@ -260,25 +260,7 @@ class PDFController extends Controller
 
 
 
-    //Funkcia na sledovanie pouzitych funkcionalit
-    protected function trackFeatureUsage(string $feature): void
-    {
-        if (auth()->check()) {
-            $login = \App\Models\Login::where('user_id', auth()->id())
-                ->latest('login_time')
-                ->first();
 
-            if ($login) {
-                $features = $login->used_features ?? [];
-
-                if (!in_array($feature, $features)) {
-                    $features[] = $feature;
-                    $login->used_features = $features;
-                    $login->save();
-                }
-            }
-        }
-    }
 
 //    PROTECT PDF METHODS
     public function showProtectPdfForm()
@@ -288,6 +270,7 @@ class PDFController extends Controller
 
     public function processProtectPdf(Request $request)
     {
+        $this->trackFeatureUsage('protect-pdf');
         $validated = $request->validate([
             'pdf' => 'required|file|mimes:pdf|max:10240',
             'password' => 'required|string|min:4',
@@ -324,6 +307,7 @@ class PDFController extends Controller
 
     public function processUnlockPdf(Request $request)
     {
+        $this->trackFeatureUsage('unlock-pdf');
         $validated = $request->validate([
             'pdf' => 'required|file|mimes:pdf|max:10240',
             'password' => 'required|string|min:1',
@@ -357,6 +341,7 @@ class PDFController extends Controller
 
     public function processResizePages(Request $request)
     {
+        $this->trackFeatureUsage('resize-pdf');
         $validated = $request->validate([
             'pdf' => 'required|file|mimes:pdf|max:10240',
             'size' => 'required|in:A4,A5,A6',
@@ -380,6 +365,68 @@ class PDFController extends Controller
         return response()->download($outputPath)->deleteFileAfterSend(true);
     }
 
+    //compress PDF
+    public function showCompressForm()
+    {
+        return view('pdf.compress');
+    }
+
+    public function processCompress(Request $request)
+    {
+        $this->trackFeatureUsage('compress-pdf');
+
+        $data = $request->validate([
+            'pdf'     => 'required|file|mimes:pdf|max:10240',
+            'quality' => 'required|integer|min:10|max:100',
+        ]);
+
+        // 1. Uloženie vstupného PDF
+        $uploadedPdf = $request->file('pdf');
+        $inputPath = storage_path('app/pdf/input.pdf');
+        $uploadedPdf->move(dirname($inputPath), 'input.pdf');
+
+        // 2. Cesta k výstupnému súboru
+        $outputPath = storage_path('app/pdf/compressed_output.pdf');
+
+        // 3. Cesta k skriptu
+        $scriptPath = base_path('scripts/compress-pdf.py');
+
+        // 4. Spustenie Python skriptu
+        $quality = $data['quality'];
+        $command = "python3 $scriptPath \"$inputPath\" \"$outputPath\" $quality";
+        exec($command . ' 2>&1', $output, $returnCode);
+
+        if ($returnCode !== 0 || !file_exists($outputPath)) {
+            return back()->withErrors([
+                'pdf' => "Compression failed: " . implode("\n", $output),
+            ]);
+        }
+
+        // 5. Stiahnutie výsledku
+        return response()->download($outputPath)->deleteFileAfterSend(true);
+    }
+
+
+
+    //Funkcia na sledovanie pouzitych funkcionalit
+    protected function trackFeatureUsage(string $feature): void
+    {
+        if (auth()->check()) {
+            $login = \App\Models\Login::where('user_id', auth()->id())
+                ->latest('login_time')
+                ->first();
+
+            if ($login) {
+                $features = $login->used_features ?? [];
+
+                if (!in_array($feature, $features)) {
+                    $features[] = $feature;
+                    $login->used_features = $features;
+                    $login->save();
+                }
+            }
+        }
+    }
 
 
     //compress PDF
