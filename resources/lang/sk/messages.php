@@ -4,7 +4,7 @@ return [
 
     // General
     'welcome' => 'Vitajte v aplikácii!',
-    'dashboard' => 'Nástenka',
+    'dashboard' => 'Menu',
     'logout' => 'Odhlásiť sa',
     'login' => 'Prihlásiť sa',
     'register' => 'Registrovať sa',
@@ -107,6 +107,7 @@ return [
     'confirm_delete_warning' => 'Vymazanie celej histórie prihlásení',
     'cancel' => 'Zavrieť',
     'confirm' => 'Potvrdiť',
+    'available_functionalities' => 'Dostupné funkcionality',
 
 
 ];

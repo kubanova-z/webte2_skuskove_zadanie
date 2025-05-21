@@ -107,5 +107,6 @@ return [
     'confirm_delete_warning' => 'Deleting the whole login history',
     'cancel' => 'Cancel',
     'confirm' => 'Confirm',
+    'available_functionalities' => 'Available functionalities',
 
 ];

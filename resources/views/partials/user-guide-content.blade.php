@@ -1,204 +1,152 @@
-<h1 class="text-5xl font-bold mb-6">{{ __('User Guide') }}</h1>
+<h1 class="text-5xl font-bold mb-6">{{ __('messages.user_guide') }}</h1>
 
 @if (app()->getLocale() === 'en')
     <p class="mb-4">Welcome in the PDF manager app!</p>
     <p>To use the app you must register or log in. This app provides various PDF management functionalities as well as administration of user account and extra features for Admin.</p>
 
-    <h2 class="text-xl font-semibold mt-6 mb-2">Frontend Features</h2>
+    <h2 class="text-2xl font-bold mb-4">Frontend functions</h2>
     <ul class="list-disc list-inside mb-4">
-        <li class="font-semibold">Registration and login:</li>
-        <li>Registration for new users, login for registered ones</li>
+        <li class="font-semibold text-xl">Registration and login:
+        </li>
+        <li> <strong class="text-base">Registration for new users</strong>
+            <p class="text-sm text-gray-600 ml-4">To create an account you have to enter your username, email and password</p>
+        </li>
+        <li> <strong class="text-base">Login for registered users</strong>
+            <p class="text-sm text-gray-600 ml-4">To login you have to enter your email and password</p>
+        </li>
         <li>2 roles - Admin and User</li>
-        <li>Password change or generating a new password</li>
-        <li class="font-semibold">Login history:</li>
-        <li>View login history (used functionalities, place, time) for Admin</li>
-        <li>Export login history to CSV</li>
-        <li>Delete login history</li>
+        <li> <strong class="text-base">Change and renewal of password</strong>
+            <p class="text-sm text-gray-600 ml-4">After clicking on the username and entering correct actual password, it can be change to custom or automatically generated strong password</p>
+        </li>
+        <li class="font-semibold text-xl">Login history:
+            <p class="text-sm text-gray-600 ml-4">Functionality available only for admin user</p></li>
+        <li> <strong class="text-base">View login history</strong>
+            <p class="text-sm text-gray-600 ml-4">See all logins into the app with time, place, country and used functionalities</p>
+        </li>
+        <li class="text-sm text-gray-600 ml-4">Export login history into CSV</li>
+        <li class="text-sm text-gray-600 ml-4">Delete login history</li>
+        <li class="font-semibold text-xl">Languages:
+        <p class="text-sm text-gray-600 ml-4">Application is available in 2 languages - English and Slovak</p></li>
     </ul>
 
+    <h2 class="text-2xl font-bold mb-4">{{ __('messages.available_functionalities') }}</h2>
+    <ul class="list-disc list-inside space-y-4 text-gray-800">
+        <li>
+            <strong class="text-base">{{ __('messages.remove_pages_title') }}</strong>
+            <p class="text-sm text-gray-600 ml-4">{{ __('messages.remove_pages_desc') }}</p>
+        </li>
+        <li>
+            <strong class="text-base">{{ __('messages.merge_pdfs_title') }}</strong>
+            <p class="text-sm text-gray-600 ml-4">{{ __('messages.merge_pdfs_desc') }}</p>
+        </li>
+        <li>
+            <strong class="text-base">{{ __('messages.pdf_to_jpg_title') }}</strong>
+            <p class="text-sm text-gray-600 ml-4">{{ __('messages.pdf_to_jpg_desc') }}</p>
+        </li>
+        <li>
+            <strong class="text-base">{{ __('messages.jpg_to_pdf_title') }}</strong>
+            <p class="text-sm text-gray-600 ml-4">{{ __('messages.jpg_to_pdf_desc') }}</p>
+        </li>
+        <li>
+            <strong class="text-base">{{ __('messages.rotate_pages_title') }}</strong>
+            <p class="text-sm text-gray-600 ml-4">{{ __('messages.rotate_pages_desc') }}</p>
+        </li>
+        <li>
+            <strong class="text-base">{{ __('messages.split_pdf_title') }}</strong>
+            <p class="text-sm text-gray-600 ml-4">{{ __('messages.split_pdf_desc') }}</p>
+        </li>
+        <li>
+            <strong class="text-base">{{ __('messages.protect_pdf_title') }}</strong>
+            <p class="text-sm text-gray-600 ml-4">{{ __('messages.protect_pdf_desc') }}</p>
+        </li>
+        <li>
+            <strong class="text-base">{{ __('messages.unlock_pdf_title') }}</strong>
+            <p class="text-sm text-gray-600 ml-4">{{ __('messages.unlock_pdf_desc') }}</p>
+        </li>
+        <li>
+            <strong class="text-base">{{ __('messages.resize_pages_title') }}</strong>
+            <p class="text-sm text-gray-600 ml-4">{{ __('messages.resize_pages_desc') }}</p>
+        </li>
+        <li>
+            <strong class="text-base">{{ __('messages.compress_title') }}</strong>
+            <p class="text-sm text-gray-600 ml-4">{{ __('messages.compress_desc') }}</p>
+        </li>
+    </ul><br><br>
 
-    <h2 class="text-xl font-semibold mt-6 mb-2">API Endpoints</h2>
-    <table class="w-full text-sm border border-gray-300 mb-6">
-        <thead class="bg-gray-100 text-left">
-        <tr>
-            <th class="border-b px-4 py-2">Method</th>
-            <th class="border-b px-4 py-2">Endpoint</th>
-            <th class="border-b px-4 py-2">Description</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr>
-            <td class="border-b px-4 py-2">GET</td>
-            <td class="border-b px-4 py-2">/dashboard</td>
-            <td class="border-b px-4 py-2">Display user dashboard (auth only)</td>
-        </tr>
-        <tr>
-            <td class="border-b px-4 py-2">PUT</td>
-            <td class="border-b px-4 py-2">/update-password</td>
-            <td class="border-b px-4 py-2">Update password manually via form</td>
-        </tr>
-        <tr>
-            <td class="border-b px-4 py-2">GET</td>
-            <td class="border-b px-4 py-2">/reset-password/{token}</td>
-            <td class="border-b px-4 py-2">Display reset password form from email</td>
-        </tr>
-        <tr>
-            <td class="border-b px-4 py-2">GET</td>
-            <td class="border-b px-4 py-2">/change-password</td>
-            <td class="border-b px-4 py-2">Display change password form</td>
-        </tr>
-        <tr>
-            <td class="border-b px-4 py-2">POST</td>
-            <td class="border-b px-4 py-2">/profile/update-password</td>
-            <td class="border-b px-4 py-2">Update password via profile</td>
-        </tr>
-        <tr>
-            <td class="border-b px-4 py-2">GET</td>
-            <td class="border-b px-4 py-2">/profile/edit</td>
-            <td class="border-b px-4 py-2">Show edit profile form</td>
-        </tr>
-        <tr>
-            <td class="border-b px-4 py-2">PATCH</td>
-            <td class="border-b px-4 py-2">/profile</td>
-            <td class="border-b px-4 py-2">Update user profile</td>
-        </tr>
-        <tr>
-            <td class="border-b px-4 py-2">DELETE</td>
-            <td class="border-b px-4 py-2">/profile</td>
-            <td class="border-b px-4 py-2">Delete user account</td>
-        </tr>
-        <tr class="bg-gray-50">
-            <td colspan="3" class="px-4 py-2 font-semibold">Login History (Admin only)</td>
-        </tr>
-        <tr>
-            <td class="border-b px-4 py-2">GET</td>
-            <td class="border-b px-4 py-2">/login-history</td>
-            <td class="border-b px-4 py-2">View login history</td>
-        </tr>
-        <tr>
-            <td class="border-b px-4 py-2">DELETE</td>
-            <td class="border-b px-4 py-2">/login-history</td>
-            <td class="border-b px-4 py-2">Delete all login records</td>
-        </tr>
-        <tr>
-            <td class="border-b px-4 py-2">GET</td>
-            <td class="border-b px-4 py-2">/login-history/export</td>
-            <td class="border-b px-4 py-2">Export login history to CSV</td>
-        </tr>
-        <tr class="bg-gray-50">
-            <td colspan="3" class="px-4 py-2 font-semibold">Public Pages</td>
-        </tr>
-        <tr>
-            <td class="border-b px-4 py-2">GET</td>
-            <td class="border-b px-4 py-2">/</td>
-            <td class="border-b px-4 py-2">Welcome / landing page</td>
-        </tr>
-        <tr>
-            <td class="border-b px-4 py-2">GET</td>
-            <td class="border-b px-4 py-2">/main</td>
-            <td class="border-b px-4 py-2">Main custom page</td>
-        </tr>
-        </tbody>
-    </table>
+
 
 
 @else
     <p class="mb-4">Vitajte v aplikácii PDF manager!</p>
-    <p>Na používanie aplikácie sa musíte zaregistrovať alebo prihlásiť. Aplikácia ponúka rôzne funkcie pre prácu s PDF ako aj správu používateľského účtu a dodatočné funkcie pre administrátorov.</p>
+    <p>Na používanie aplikácie sa musíte zaregistrovať alebo prihlásiť. Aplikácia ponúka rôzne funkcie pre prácu s PDF súbormi ako aj správu používateľského účtu a dodatočné funkcie pre administrátorov.</p>
 
-    <h2 class="text-xl font-semibold mt-6 mb-2">Funkcie frontendu</h2>
+    <h2 class="text-2xl font-bold mb-4">Funkcie frontendu</h2>
     <ul class="list-disc list-inside mb-4">
-        <li class="font-semibold">Registrácia a prihlásenie:</li>
-        <li>Registrácia nových používateľov, prihlásenie pre existujúcich</li>
+        <li class="font-semibold text-xl">Registrácia a prihlásenie:
+        </li>
+        <li> <strong class="text-base">Registrácia nových používateľov</strong>
+        <p class="text-sm text-gray-600 ml-4">Na vytvorie konta stačí zadať používateľské meno, email a heslo</p>
+        </li>
+        <li> <strong class="text-base">Prihlásenie pre zaregistrovaných používateľov</strong>
+        <p class="text-sm text-gray-600 ml-4">Na prihlásenie stačí zadať email a nastavené heslo</p>
+        </li>
         <li>2 roly - Admin a Používateľ</li>
-        <li>Zmena hesla alebo jeho obnovenie</li>
-        <li class="font-semibold">História prihlásení:</li>
-        <li>Zobrazenie histórie prihlásení (funkcie, čas, IP) – len Admin</li>
-        <li>Export histórie do CSV</li>
-        <li>Vymazanie histórie</li>
+        <li> <strong class="text-base">Zmena hesla alebo jeho obnovenie</strong>
+        <p class="text-sm text-gray-600 ml-4">Po kliknutí na meno používateľa sa dá po zadaní aktuálneho hesla zmeniť - na vlastné alebo vygenerované silné heslo</p>
+        </li>
+        <li class="font-semibold text-xl">História prihlásení:
+        <p class="text-sm text-gray-600 ml-4">Funkcionalita dostupná iba pre používateľa s oprávnením admina</p></li>
+        <li> <strong class="text-base">Zobrazenie histórie prihlásení</strong>
+        <p class="text-sm text-gray-600 ml-4">Všetky prihlásenia do aplikácie s časom, miestom a použitými funkcionalitami</p>
+        </li>
+        <li class="text-sm text-gray-600 ml-4">Export histórie do CSV</li>
+        <li class="text-sm text-gray-600 ml-4">Vymazanie histórie</li>
+        <li class="font-semibold text-xl">Jazyk:
+            <p class="text-sm text-gray-600 ml-4">Aplikácia je dostupná v 2 jazykoch - angličtine a slovenčine</p></li>
     </ul>
 
-    <h2 class="text-xl font-semibold mt-6 mb-2">API Endpointy</h2>
-    <table class="w-full text-sm border border-gray-300 mb-6">
-        <thead class="bg-gray-100 text-left">
-        <tr>
-            <th class="border-b px-4 py-2">Metóda</th>
-            <th class="border-b px-4 py-2">Endpoint</th>
-            <th class="border-b px-4 py-2">Popis</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr>
-            <td class="border-b px-4 py-2">GET</td>
-            <td class="border-b px-4 py-2">/dashboard</td>
-            <td class="border-b px-4 py-2">Zobrazí dashboard prihláseného používateľa</td>
-        </tr>
-        <tr>
-            <td class="border-b px-4 py-2">PUT</td>
-            <td class="border-b px-4 py-2">/update-password</td>
-            <td class="border-b px-4 py-2">Zmena hesla cez formulár</td>
-        </tr>
-        <tr>
-            <td class="border-b px-4 py-2">GET</td>
-            <td class="border-b px-4 py-2">/reset-password/{token}</td>
-            <td class="border-b px-4 py-2">Zobrazenie formulára z e-mailu</td>
-        </tr>
-        <tr>
-            <td class="border-b px-4 py-2">GET</td>
-            <td class="border-b px-4 py-2">/change-password</td>
-            <td class="border-b px-4 py-2">Formulár na zmenu hesla</td>
-        </tr>
-        <tr>
-            <td class="border-b px-4 py-2">POST</td>
-            <td class="border-b px-4 py-2">/profile/update-password</td>
-            <td class="border-b px-4 py-2">Zmena hesla cez profil</td>
-        </tr>
-        <tr>
-            <td class="border-b px-4 py-2">GET</td>
-            <td class="border-b px-4 py-2">/profile/edit</td>
-            <td class="border-b px-4 py-2">Formulár na úpravu profilu</td>
-        </tr>
-        <tr>
-            <td class="border-b px-4 py-2">PATCH</td>
-            <td class="border-b px-4 py-2">/profile</td>
-            <td class="border-b px-4 py-2">Uloženie zmien profilu</td>
-        </tr>
-        <tr>
-            <td class="border-b px-4 py-2">DELETE</td>
-            <td class="border-b px-4 py-2">/profile</td>
-            <td class="border-b px-4 py-2">Zmazanie účtu</td>
-        </tr>
-        <tr class="bg-gray-50">
-            <td colspan="3" class="px-4 py-2 font-semibold">História prihlásení (len pre admina)</td>
-        </tr>
-        <tr>
-            <td class="border-b px-4 py-2">GET</td>
-            <td class="border-b px-4 py-2">/login-history</td>
-            <td class="border-b px-4 py-2">Zobraziť históriu</td>
-        </tr>
-        <tr>
-            <td class="border-b px-4 py-2">DELETE</td>
-            <td class="border-b px-4 py-2">/login-history</td>
-            <td class="border-b px-4 py-2">Vymazať celú históriu</td>
-        </tr>
-        <tr>
-            <td class="border-b px-4 py-2">GET</td>
-            <td class="border-b px-4 py-2">/login-history/export</td>
-            <td class="border-b px-4 py-2">Export histórie do CSV</td>
-        </tr>
-        <tr class="bg-gray-50">
-            <td colspan="3" class="px-4 py-2 font-semibold">Verejné stránky</td>
-        </tr>
-        <tr>
-            <td class="border-b px-4 py-2">GET</td>
-            <td class="border-b px-4 py-2">/</td>
-            <td class="border-b px-4 py-2">Úvodná stránka</td>
-        </tr>
-        <tr>
-            <td class="border-b px-4 py-2">GET</td>
-            <td class="border-b px-4 py-2">/main</td>
-            <td class="border-b px-4 py-2">Hlavná stránka aplikácie</td>
-        </tr>
-        </tbody>
-    </table>
+    <h2 class="text-2xl font-bold mb-4">{{ __('messages.available_functionalities') }}</h2>
+    <ul class="list-disc list-inside space-y-4 text-gray-800">
+        <li>
+            <strong class="text-base">{{ __('messages.remove_pages_title') }}</strong>
+            <p class="text-sm text-gray-600 ml-4">{{ __('messages.remove_pages_desc') }}</p>
+        </li>
+        <li>
+            <strong class="text-base">{{ __('messages.merge_pdfs_title') }}</strong>
+            <p class="text-sm text-gray-600 ml-4">{{ __('messages.merge_pdfs_desc') }}</p>
+        </li>
+        <li>
+            <strong class="text-base">{{ __('messages.pdf_to_jpg_title') }}</strong>
+            <p class="text-sm text-gray-600 ml-4">{{ __('messages.pdf_to_jpg_desc') }}</p>
+        </li>
+        <li>
+            <strong class="text-base">{{ __('messages.jpg_to_pdf_title') }}</strong>
+            <p class="text-sm text-gray-600 ml-4">{{ __('messages.jpg_to_pdf_desc') }}</p>
+        </li>
+        <li>
+            <strong class="text-base">{{ __('messages.rotate_pages_title') }}</strong>
+            <p class="text-sm text-gray-600 ml-4">{{ __('messages.rotate_pages_desc') }}</p>
+        </li>
+        <li>
+            <strong class="text-base">{{ __('messages.split_pdf_title') }}</strong>
+            <p class="text-sm text-gray-600 ml-4">{{ __('messages.split_pdf_desc') }}</p>
+        </li>
+        <li>
+            <strong class="text-base">{{ __('messages.protect_pdf_title') }}</strong>
+            <p class="text-sm text-gray-600 ml-4">{{ __('messages.protect_pdf_desc') }}</p>
+        </li>
+        <li>
+            <strong class="text-base">{{ __('messages.unlock_pdf_title') }}</strong>
+            <p class="text-sm text-gray-600 ml-4">{{ __('messages.unlock_pdf_desc') }}</p>
+        </li>
+        <li>
+            <strong class="text-base">{{ __('messages.resize_pages_title') }}</strong>
+            <p class="text-sm text-gray-600 ml-4">{{ __('messages.resize_pages_desc') }}</p>
+        </li>
+        <li>
+            <strong class="text-base">{{ __('messages.compress_title') }}</strong>
+            <p class="text-sm text-gray-600 ml-4">{{ __('messages.compress_desc') }}</p>
+        </li>
+    </ul><br><br>
+
 @endif

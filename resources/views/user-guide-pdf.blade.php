@@ -5,7 +5,7 @@
     <title>User Guide</title>
     <style>
         body {
-            font-family: sans-serif;
+            font-family: 'DejaVu Sans', sans-serif;
             line-height: 1.6;
             font-size: 14px;
         }
