@@ -8,8 +8,23 @@ use Illuminate\Http\Request;
 
 class EmailVerificationNotificationController extends Controller
 {
-    /**
-     * Send a new email verification notification.
+   /**
+     * Send a new email verification notification to the authenticated user.
+     *
+     * @OA\Post(
+     *   path="/api/email/verification-notification",
+     *   tags={"Auth"},
+     *   summary="Send email verification link",
+     *   security={{"sanctum": {}}},
+     *   @OA\Response(
+     *     response=200,
+     *     description="Verification link sent"
+     *   ),
+     *   @OA\Response(
+     *     response=401,
+     *     description="Unauthenticated"
+     *   )
+     * )
      */
     public function store(Request $request): RedirectResponse
     {

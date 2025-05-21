@@ -16,7 +16,34 @@ class RegisteredUserController extends Controller
         return view('auth.register');
     }
 
-    // Handle the form POST
+
+    /**
+     * Register a new user.
+     *
+     * @OA\Post(
+     *   path="/api/register",
+     *   tags={"Auth"},
+     *   summary="Create a new user account",
+     *   @OA\RequestBody(
+     *     required=true,
+     *     @OA\JsonContent(
+     *       required={"name","email","password","password_confirmation"},
+     *       @OA\Property(property="name", type="string", example="Jane Doe"),
+     *       @OA\Property(property="email", type="string", format="email", example="jane@example.com"),
+     *       @OA\Property(property="password", type="string", format="password", example="secret123"),
+     *       @OA\Property(property="password_confirmation", type="string", format="password", example="secret123")
+     *     )
+     *   ),
+     *   @OA\Response(
+     *     response=302,
+     *     description="Redirects to the main page on success"
+     *   ),
+     *   @OA\Response(
+     *     response=422,
+     *     description="Validation error"
+     *   )
+     * )
+     */
     public function store(Request $request)
     {
         // 1) Validate

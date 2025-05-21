@@ -23,6 +23,32 @@ class PasswordResetLinkController extends Controller
      *
      * @throws \Illuminate\Validation\ValidationException
      */
+
+
+     /**
+     * Send a password reset link to the given email.
+     *
+     * @OA\Post(
+     *   path="/api/forgot-password",
+     *   tags={"Auth"},
+     *   summary="Request a password reset link via email",
+     *   @OA\RequestBody(
+     *     required=true,
+     *     @OA\JsonContent(
+     *       required={"email"},
+     *       @OA\Property(property="email", type="string", format="email", example="user@example.com")
+     *     )
+     *   ),
+     *   @OA\Response(
+     *     response=200,
+     *     description="Reset link sent (or failure message returned)"
+     *   ),
+     *   @OA\Response(
+     *     response=422,
+     *     description="Validation error"
+     *   )
+     * )
+     */
     public function store(Request $request): RedirectResponse
     {
         $request->validate([

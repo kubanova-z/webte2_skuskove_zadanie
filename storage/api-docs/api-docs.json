@@ -1,0 +1,1051 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "My PDF Converter API",
+        "description": "Upload any document and get a PDF in response",
+        "version": "1.0.0"
+    },
+    "servers": [
+        {
+            "url": "http://my-default-host.com",
+            "description": "API server"
+        }
+    ],
+    "paths": {
+        "/api/login": {
+            "post": {
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "Authenticate user credentials",
+                "description": "Log in a user and start a session.",
+                "operationId": "bc76a9d52929cab7a147ca7b5c527430",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "email",
+                                    "password"
+                                ],
+                                "properties": {
+                                    "email": {
+                                        "type": "string",
+                                        "format": "email",
+                                        "example": "user@example.com"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "format": "password",
+                                        "example": "secret123"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "302": {
+                        "description": "Redirect to dashboard on success"
+                    },
+                    "401": {
+                        "description": "Invalid credentials"
+                    }
+                }
+            }
+        },
+        "/api/logout": {
+            "post": {
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "End the authenticated session",
+                "description": "Log out the current user and invalidate the session.",
+                "operationId": "0ab4e3cf7bc4f7ec81b48f7928c7de7c",
+                "responses": {
+                    "302": {
+                        "description": "Redirect to home page"
+                    }
+                }
+            }
+        },
+        "/api/password/confirm": {
+            "post": {
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "Verify the authenticated user’s password",
+                "description": "Confirm the user’s current password for sensitive actions.",
+                "operationId": "7acc552047719feda4ebbe3d9f7d7e9f",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "password"
+                                ],
+                                "properties": {
+                                    "password": {
+                                        "type": "string",
+                                        "format": "password",
+                                        "example": "currentPassword123"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Password confirmed"
+                    },
+                    "422": {
+                        "description": "Invalid password"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/api/email/verification-notification": {
+            "post": {
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "Send email verification link",
+                "description": "Send a new email verification notification to the authenticated user.",
+                "operationId": "21ff3f9f9b9e1407909089f864312e1c",
+                "responses": {
+                    "200": {
+                        "description": "Verification link sent"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/api/user/password": {
+            "put": {
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "Change the authenticated user’s password",
+                "description": "Update the current user’s password.",
+                "operationId": "5609218cd711f2685cb3a76db17ee277",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "current_password",
+                                    "password",
+                                    "password_confirmation"
+                                ],
+                                "properties": {
+                                    "current_password": {
+                                        "type": "string",
+                                        "format": "password",
+                                        "example": "oldSecret123"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "format": "password",
+                                        "example": "newSecret123"
+                                    },
+                                    "password_confirmation": {
+                                        "type": "string",
+                                        "format": "password",
+                                        "example": "newSecret123"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Password successfully updated"
+                    },
+                    "422": {
+                        "description": "Validation error"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/api/forgot-password": {
+            "post": {
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "Request a password reset link via email",
+                "description": "Send a password reset link to the given email.",
+                "operationId": "e6a36e6e48542536284f7f26f6cc4d7f",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "email"
+                                ],
+                                "properties": {
+                                    "email": {
+                                        "type": "string",
+                                        "format": "email",
+                                        "example": "user@example.com"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Reset link sent (or failure message returned)"
+                    },
+                    "422": {
+                        "description": "Validation error"
+                    }
+                }
+            }
+        },
+        "/api/register": {
+            "post": {
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "Create a new user account",
+                "description": "Register a new user.",
+                "operationId": "18235ea6963e661c49bf381065779d6a",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "name",
+                                    "email",
+                                    "password",
+                                    "password_confirmation"
+                                ],
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "example": "Jane Doe"
+                                    },
+                                    "email": {
+                                        "type": "string",
+                                        "format": "email",
+                                        "example": "jane@example.com"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "format": "password",
+                                        "example": "secret123"
+                                    },
+                                    "password_confirmation": {
+                                        "type": "string",
+                                        "format": "password",
+                                        "example": "secret123"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "302": {
+                        "description": "Redirects to the main page on success"
+                    },
+                    "422": {
+                        "description": "Validation error"
+                    }
+                }
+            }
+        },
+        "/api/email/verify/{id}/{hash}": {
+            "get": {
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "Mark the authenticated user’s email as verified",
+                "description": "Verify a user’s email address via signed link.",
+                "operationId": "28405e7cec5bd7034f5ee5b3261b3cad",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "User ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "hash",
+                        "in": "path",
+                        "description": "SHA1 of the user’s email address",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "302": {
+                        "description": "Redirect to dashboard with `?verified=1`"
+                    },
+                    "403": {
+                        "description": "Invalid or expired verification link"
+                    }
+                }
+            }
+        },
+        "/api/login-history": {
+            "delete": {
+                "tags": [
+                    "LoginHistory"
+                ],
+                "summary": "Truncate the login history (admin only)",
+                "description": "Delete *all* login history records.",
+                "operationId": "9635b590cc8365e3595b8a95b576294a",
+                "responses": {
+                    "204": {
+                        "description": "All login records deleted"
+                    },
+                    "403": {
+                        "description": "Access denied"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/api/login-history/export": {
+            "get": {
+                "tags": [
+                    "LoginHistory"
+                ],
+                "summary": "Download login history CSV (admin only)",
+                "description": "Export the login history as a CSV download.",
+                "operationId": "cac354680d9a4cfb7f0a28170a72e572",
+                "responses": {
+                    "200": {
+                        "description": "CSV file stream",
+                        "content": {
+                            "text/csv": {}
+                        }
+                    },
+                    "403": {
+                        "description": "Access denied"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/api/pdf/remove-pages": {
+            "post": {
+                "tags": [
+                    "PDF"
+                ],
+                "summary": "Remove selected pages from an uploaded PDF",
+                "operationId": "3faff9eff3b743d8e2f3310102036a6b",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "properties": {
+                                    "pdf": {
+                                        "description": "The PDF to strip pages from",
+                                        "type": "string",
+                                        "format": "binary"
+                                    },
+                                    "pages": {
+                                        "description": "Pages to remove, e.g. '1,3-5'",
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Returns the processed PDF",
+                        "content": {
+                            "application/pdf": {}
+                        }
+                    },
+                    "400": {
+                        "description": "Validation error"
+                    },
+                    "500": {
+                        "description": "Processing failed"
+                    }
+                }
+            }
+        },
+        "/api/pdf/merge": {
+            "post": {
+                "tags": [
+                    "PDF"
+                ],
+                "summary": "Merge multiple PDF files into one PDF",
+                "description": "Merge multiple PDFs into a single document.",
+                "operationId": "c4854206174324267bdf2a6c9cb83117",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "properties": {
+                                    "pdfs": {
+                                        "description": "Array of PDF files to merge",
+                                        "type": "array",
+                                        "items": {
+                                            "type": "string",
+                                            "format": "binary"
+                                        }
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Merged PDF file",
+                        "content": {
+                            "application/pdf": {}
+                        }
+                    },
+                    "400": {
+                        "description": "Validation error"
+                    },
+                    "500": {
+                        "description": "Merging failed"
+                    }
+                }
+            }
+        },
+        "/api/pdf/to-jpg": {
+            "post": {
+                "tags": [
+                    "PDF"
+                ],
+                "summary": "Convert PDF pages to JPG images",
+                "description": "Convert a PDF into JPG images and return them as a ZIP.",
+                "operationId": "3cd7e6c53a36a6eb2573fb9acb366af6",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "properties": {
+                                    "pdf": {
+                                        "description": "The PDF file to convert",
+                                        "type": "string",
+                                        "format": "binary"
+                                    },
+                                    "dpi": {
+                                        "description": "Image resolution in DPI (72–300)",
+                                        "type": "integer",
+                                        "default": 150
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "ZIP archive of JPG images",
+                        "content": {
+                            "application/zip": {}
+                        }
+                    },
+                    "400": {
+                        "description": "Validation error"
+                    },
+                    "500": {
+                        "description": "Conversion failed"
+                    }
+                }
+            }
+        },
+        "/api/pdf/from-jpg": {
+            "post": {
+                "tags": [
+                    "PDF"
+                ],
+                "summary": "Convert uploaded JPG images into a PDF",
+                "description": "Combine JPG images into a single PDF document.",
+                "operationId": "e31244938e8c0a276f2a214853acc0da",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "properties": {
+                                    "images": {
+                                        "description": "Array of JPG files to combine",
+                                        "type": "array",
+                                        "items": {
+                                            "type": "string",
+                                            "format": "binary"
+                                        }
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Generated PDF file",
+                        "content": {
+                            "application/pdf": {}
+                        }
+                    },
+                    "400": {
+                        "description": "Validation error"
+                    },
+                    "500": {
+                        "description": "Conversion failed"
+                    }
+                }
+            }
+        },
+        "/api/pdf/rotate": {
+            "post": {
+                "tags": [
+                    "PDF"
+                ],
+                "summary": "Rotate pages in a PDF by 90, 180, or 270 degrees",
+                "description": "Rotate selected pages of an uploaded PDF.",
+                "operationId": "4dda39661e9f5b704ffbc2f5329518d2",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "properties": {
+                                    "pdf": {
+                                        "description": "The PDF file to rotate",
+                                        "type": "string",
+                                        "format": "binary"
+                                    },
+                                    "pages": {
+                                        "description": "Pages to rotate, e.g. '1,3,5'",
+                                        "type": "string"
+                                    },
+                                    "angle": {
+                                        "description": "Rotation angle (90, 180, or 270)",
+                                        "type": "integer",
+                                        "enum": [
+                                            90,
+                                            180,
+                                            270
+                                        ]
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Rotated PDF download",
+                        "content": {
+                            "application/pdf": {}
+                        }
+                    },
+                    "400": {
+                        "description": "Validation error"
+                    },
+                    "500": {
+                        "description": "Rotation failed"
+                    }
+                }
+            }
+        },
+        "/api/pdf/split": {
+            "post": {
+                "tags": [
+                    "PDF"
+                ],
+                "summary": "Split a PDF into parts of given size",
+                "description": "Split an uploaded PDF into multiple smaller PDFs.",
+                "operationId": "59e604c1056d7d106723b6fdd09b9ca7",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "properties": {
+                                    "pdf": {
+                                        "description": "The PDF file to split",
+                                        "type": "string",
+                                        "format": "binary"
+                                    },
+                                    "split_size": {
+                                        "description": "Number of pages per split file (min 1)",
+                                        "type": "integer",
+                                        "minimum": 1
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "ZIP archive of split PDF files",
+                        "content": {
+                            "application/zip": {}
+                        }
+                    },
+                    "400": {
+                        "description": "Validation error"
+                    },
+                    "500": {
+                        "description": "Splitting failed"
+                    }
+                }
+            }
+        },
+        "/api/pdf/protect": {
+            "post": {
+                "tags": [
+                    "PDF"
+                ],
+                "summary": "Add password protection to a PDF",
+                "description": "Protect an uploaded PDF with a password.",
+                "operationId": "37f1aa9aecebe5f919811964f94ea559",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "properties": {
+                                    "pdf": {
+                                        "description": "The PDF file to protect",
+                                        "type": "string",
+                                        "format": "binary"
+                                    },
+                                    "password": {
+                                        "description": "Password to set (min 4 characters)",
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Protected PDF download",
+                        "content": {
+                            "application/pdf": {}
+                        }
+                    },
+                    "400": {
+                        "description": "Validation error"
+                    },
+                    "500": {
+                        "description": "Protection failed"
+                    }
+                }
+            }
+        },
+        "/api/pdf/unlock": {
+            "post": {
+                "tags": [
+                    "PDF"
+                ],
+                "summary": "Remove password protection from a PDF",
+                "description": "Unlock a password-protected PDF.",
+                "operationId": "cea5e29aaa8ee7329e5a32b4c76b76ca",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "properties": {
+                                    "pdf": {
+                                        "description": "The locked PDF file to unlock",
+                                        "type": "string",
+                                        "format": "binary"
+                                    },
+                                    "password": {
+                                        "description": "Password for the PDF",
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Unlocked PDF download",
+                        "content": {
+                            "application/pdf": {}
+                        }
+                    },
+                    "400": {
+                        "description": "Validation error"
+                    },
+                    "500": {
+                        "description": "Unlocking failed"
+                    }
+                }
+            }
+        },
+        "/api/pdf/resize": {
+            "post": {
+                "tags": [
+                    "PDF"
+                ],
+                "summary": "Resize PDF pages to A4, A5, or A6",
+                "description": "Resize pages of an uploaded PDF to a specified paper size.",
+                "operationId": "9bcc458a6af25fa6e9a8039fa93653f4",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "properties": {
+                                    "pdf": {
+                                        "description": "The PDF file whose pages will be resized",
+                                        "type": "string",
+                                        "format": "binary"
+                                    },
+                                    "size": {
+                                        "description": "Target page size",
+                                        "type": "string",
+                                        "enum": [
+                                            "A4",
+                                            "A5",
+                                            "A6"
+                                        ]
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Resized PDF download",
+                        "content": {
+                            "application/pdf": {}
+                        }
+                    },
+                    "400": {
+                        "description": "Validation error"
+                    },
+                    "500": {
+                        "description": "Resize operation failed"
+                    }
+                }
+            }
+        },
+        "/api/pdf/compress": {
+            "post": {
+                "tags": [
+                    "PDF"
+                ],
+                "summary": "Compress a PDF with specified quality",
+                "description": "Compress an uploaded PDF to reduce file size.",
+                "operationId": "da965004c7d02a4d10a6ed1ccbdaec4d",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "properties": {
+                                    "pdf": {
+                                        "description": "The PDF file to compress",
+                                        "type": "string",
+                                        "format": "binary"
+                                    },
+                                    "quality": {
+                                        "description": "Compression quality (10–100)",
+                                        "type": "integer",
+                                        "maximum": 100,
+                                        "minimum": 10
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Compressed PDF download",
+                        "content": {
+                            "application/pdf": {}
+                        }
+                    },
+                    "400": {
+                        "description": "Validation error"
+                    },
+                    "500": {
+                        "description": "Compression failed"
+                    }
+                }
+            }
+        },
+        "/api/profile": {
+            "put": {
+                "tags": [
+                    "Profile"
+                ],
+                "summary": "Update name and email for the current user",
+                "description": "Update the authenticated user’s profile.",
+                "operationId": "b927bf00923c712a27589c6a510ebbf5",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "example": "Jane Doe"
+                                    },
+                                    "email": {
+                                        "type": "string",
+                                        "format": "email",
+                                        "example": "jane@example.com"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Profile updated"
+                    },
+                    "422": {
+                        "description": "Validation error"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "Profile"
+                ],
+                "summary": "Delete current user account",
+                "description": "Delete the authenticated user’s account.",
+                "operationId": "3c62733109c5499344671a2ac26a1507",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "password"
+                                ],
+                                "properties": {
+                                    "password": {
+                                        "type": "string",
+                                        "format": "password",
+                                        "example": "currentPassword123"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "204": {
+                        "description": "Account deleted"
+                    },
+                    "422": {
+                        "description": "Validation error"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/api/profile/password": {
+            "put": {
+                "tags": [
+                    "Profile"
+                ],
+                "summary": "Update current user password",
+                "description": "Change the authenticated user’s password.",
+                "operationId": "0a645daf6864cd029d4ab75a1f5c0164",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "current_password",
+                                    "new_password",
+                                    "new_password_confirmation"
+                                ],
+                                "properties": {
+                                    "current_password": {
+                                        "type": "string",
+                                        "format": "password",
+                                        "example": "oldSecret123"
+                                    },
+                                    "new_password": {
+                                        "type": "string",
+                                        "format": "password",
+                                        "example": "newSecret123"
+                                    },
+                                    "new_password_confirmation": {
+                                        "type": "string",
+                                        "format": "password",
+                                        "example": "newSecret123"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Password updated"
+                    },
+                    "422": {
+                        "description": "Validation error"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/api/user-guide/pdf": {
+            "get": {
+                "tags": [
+                    "UserGuide"
+                ],
+                "summary": "Download the user guide PDF",
+                "description": "Download the user guide as a PDF.",
+                "operationId": "508bf2a1c2027f599cccbff104706f2c",
+                "responses": {
+                    "200": {
+                        "description": "User guide PDF file",
+                        "content": {
+                            "application/pdf": {}
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "tags": [
+        {
+            "name": "Auth",
+            "description": "Operations around login, logout, registration"
+        },
+        {
+            "name": "PDF",
+            "description": "Convert documents to PDF"
+        },
+        {
+            "name": "Profile",
+            "description": "Fetch and update user profile"
+        },
+        {
+            "name": "UserGuide",
+            "description": "Retrieve user guide content"
+        },
+        {
+            "name": "LoginHistory",
+            "description": "View past login records"
+        }
+    ],
+    "components": {
+        "securitySchemes": {
+            "sanctum": {
+                "type": "apiKey",
+                "description": "Enter token in format (Bearer <token>)",
+                "name": "Authorization",
+                "in": "header"
+            }
+        }
+    },
+    "security": [
+        {
+            "sanctum": []
+        }
+    ]
+}

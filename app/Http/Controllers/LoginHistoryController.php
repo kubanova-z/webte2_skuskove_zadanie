@@ -18,6 +18,25 @@ class LoginHistoryController extends Controller
         return view('login-history', compact('logins'));
     }
 
+
+    /**
+     * Delete *all* login history records.
+     *
+     * @OA\Delete(
+     *   path="/api/login-history",
+     *   tags={"LoginHistory"},
+     *   summary="Truncate the login history (admin only)",
+     *   security={{"sanctum": {}}},
+     *   @OA\Response(
+     *     response=204,
+     *     description="All login records deleted"
+     *   ),
+     *   @OA\Response(
+     *     response=403,
+     *     description="Access denied"
+     *   )
+     * )
+     */
     public function destroyAll()
     {
         if (auth()->user()->role !== 'admin') {
@@ -29,6 +48,28 @@ class LoginHistoryController extends Controller
         return redirect('/login-history')->with('success', 'All login history deleted.');
     }
 
+
+/**
+ * Export the login history as a CSV download.
+ *
+ * @OA\Get(
+ *   path="/api/login-history/export",
+ *   tags={"LoginHistory"},
+ *   summary="Download login history CSV (admin only)",
+ *   security={{"sanctum": {}}},
+ *   @OA\Response(
+ *     response=200,
+ *     description="CSV file stream",
+ *     @OA\MediaType(
+ *       mediaType="text/csv"
+ *     )
+ *   ),
+ *   @OA\Response(
+ *     response=403,
+ *     description="Access denied"
+ *   )
+ * )
+ */
     public function export()
     {
         if (auth()->user()->role !== 'admin') {

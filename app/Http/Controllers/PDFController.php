@@ -6,11 +6,40 @@ use Illuminate\Http\Request;
 
 class PDFController extends Controller
 {
+
+    
     //REMOVE PAGES METHODS
     public function showRemovePagesForm()
     {
         return view('pdf.remove-pages');
     }
+
+
+    /**
+ * @OA\Post(
+ *   path="/api/pdf/remove-pages",
+ *   tags={"PDF"},
+ *   summary="Remove selected pages from an uploaded PDF",
+ *   @OA\RequestBody(
+ *     required=true,
+ *     @OA\MediaType(
+ *       mediaType="multipart/form-data",
+ *       @OA\Schema(
+ *         @OA\Property(property="pdf",  type="string", format="binary", description="The PDF to strip pages from"),
+ *         @OA\Property(property="pages", type="string", description="Pages to remove, e.g. '1,3-5'")
+ *       )
+ *     )
+ *   ),
+ *   @OA\Response(
+ *     response=200,
+ *     description="Returns the processed PDF",
+ *     @OA\MediaType(mediaType="application/pdf")
+ *   ),
+ *   @OA\Response(response=400, description="Validation error"),
+ *   @OA\Response(response=500, description="Processing failed")
+ * )
+ */
+
 
     public function processRemovePages(Request $request)
     {
@@ -49,6 +78,45 @@ class PDFController extends Controller
         return view('pdf.merge-pdfs');
     }
 
+     /**
+     * Merge multiple PDFs into a single document.
+     *
+     * @OA\Post(
+     *   path="/api/pdf/merge",
+     *   tags={"PDF"},
+     *   summary="Merge multiple PDF files into one PDF",
+     *   @OA\RequestBody(
+     *     required=true,
+     *     @OA\MediaType(
+     *       mediaType="multipart/form-data",
+     *       @OA\Schema(
+     *         @OA\Property(
+     *           property="pdfs",
+     *           type="array",
+     *           description="Array of PDF files to merge",
+     *           @OA\Items(
+     *             type="string",
+     *             format="binary"
+     *           )
+     *         )
+     *       )
+     *     )
+     *   ),
+     *   @OA\Response(
+     *     response=200,
+     *     description="Merged PDF file",
+     *     @OA\MediaType(mediaType="application/pdf")
+     *   ),
+     *   @OA\Response(
+     *     response=400,
+     *     description="Validation error"
+     *   ),
+     *   @OA\Response(
+     *     response=500,
+     *     description="Merging failed"
+     *   )
+     * )
+     */
     public  function processMergePdfs(Request $request)
     {
         $this->trackFeatureUsage('merge-pdf');
@@ -91,6 +159,49 @@ class PDFController extends Controller
         return view('pdf.pdf-to-jpg');
     }
 
+
+     /**
+     * Convert a PDF into JPG images and return them as a ZIP.
+     *
+     * @OA\Post(
+     *   path="/api/pdf/to-jpg",
+     *   tags={"PDF"},
+     *   summary="Convert PDF pages to JPG images",
+     *   @OA\RequestBody(
+     *     required=true,
+     *     @OA\MediaType(
+     *       mediaType="multipart/form-data",
+     *       @OA\Schema(
+     *         @OA\Property(
+     *           property="pdf",
+     *           type="string",
+     *           format="binary",
+     *           description="The PDF file to convert"
+     *         ),
+     *         @OA\Property(
+     *           property="dpi",
+     *           type="integer",
+     *           description="Image resolution in DPI (72–300)",
+     *           default=150
+     *         )
+     *       )
+     *     )
+     *   ),
+     *   @OA\Response(
+     *     response=200,
+     *     description="ZIP archive of JPG images",
+     *     @OA\MediaType(mediaType="application/zip")
+     *   ),
+     *   @OA\Response(
+     *     response=400,
+     *     description="Validation error"
+     *   ),
+     *   @OA\Response(
+     *     response=500,
+     *     description="Conversion failed"
+     *   )
+     * )
+     */
     public function processPdfToJpg(Request $request)
     {
         $this->trackFeatureUsage('pdf-to-jpg');
@@ -143,6 +254,46 @@ class PDFController extends Controller
         return view('pdf.jpg-to-pdf');
     }
 
+
+     /**
+     * Combine JPG images into a single PDF document.
+     *
+     * @OA\Post(
+     *   path="/api/pdf/from-jpg",
+     *   tags={"PDF"},
+     *   summary="Convert uploaded JPG images into a PDF",
+     *   @OA\RequestBody(
+     *     required=true,
+     *     @OA\MediaType(
+     *       mediaType="multipart/form-data",
+     *       @OA\Schema(
+     *         @OA\Property(
+     *           property="images",
+     *           type="array",
+     *           description="Array of JPG files to combine",
+     *           @OA\Items(
+     *             type="string",
+     *             format="binary"
+     *           )
+     *         )
+     *       )
+     *     )
+     *   ),
+     *   @OA\Response(
+     *     response=200,
+     *     description="Generated PDF file",
+     *     @OA\MediaType(mediaType="application/pdf")
+     *   ),
+     *   @OA\Response(
+     *     response=400,
+     *     description="Validation error"
+     *   ),
+     *   @OA\Response(
+     *     response=500,
+     *     description="Conversion failed"
+     *   )
+     * )
+     */
     public function processJpgToPdf(Request $request)
     {
         $this->trackFeatureUsage('jpg-to-pdf');
@@ -182,6 +333,54 @@ class PDFController extends Controller
         return view('pdf.rotate-pages');
     }
 
+
+      /**
+     * Rotate selected pages of an uploaded PDF.
+     *
+     * @OA\Post(
+     *   path="/api/pdf/rotate",
+     *   tags={"PDF"},
+     *   summary="Rotate pages in a PDF by 90, 180, or 270 degrees",
+     *   @OA\RequestBody(
+     *     required=true,
+     *     @OA\MediaType(
+     *       mediaType="multipart/form-data",
+     *       @OA\Schema(
+     *         @OA\Property(
+     *           property="pdf",
+     *           type="string",
+     *           format="binary",
+     *           description="The PDF file to rotate"
+     *         ),
+     *         @OA\Property(
+     *           property="pages",
+     *           type="string",
+     *           description="Pages to rotate, e.g. '1,3,5'"
+     *         ),
+     *         @OA\Property(
+     *           property="angle",
+     *           type="integer",
+     *           description="Rotation angle (90, 180, or 270)",
+     *           enum={90,180,270}
+     *         )
+     *       )
+     *     )
+     *   ),
+     *   @OA\Response(
+     *     response=200,
+     *     description="Rotated PDF download",
+     *     @OA\MediaType(mediaType="application/pdf")
+     *   ),
+     *   @OA\Response(
+     *     response=400,
+     *     description="Validation error"
+     *   ),
+     *   @OA\Response(
+     *     response=500,
+     *     description="Rotation failed"
+     *   )
+     * )
+     */
     public function processRotatePages(Request $request)
     {
         $this->trackFeatureUsage('rotate-pdf');
@@ -219,6 +418,49 @@ class PDFController extends Controller
         return view('pdf.split-pdf');
     }
 
+
+    /**
+     * Split an uploaded PDF into multiple smaller PDFs.
+     *
+     * @OA\Post(
+     *   path="/api/pdf/split",
+     *   tags={"PDF"},
+     *   summary="Split a PDF into parts of given size",
+     *   @OA\RequestBody(
+     *     required=true,
+     *     @OA\MediaType(
+     *       mediaType="multipart/form-data",
+     *       @OA\Schema(
+     *         @OA\Property(
+     *           property="pdf",
+     *           type="string",
+     *           format="binary",
+     *           description="The PDF file to split"
+     *         ),
+     *         @OA\Property(
+     *           property="split_size",
+     *           type="integer",
+     *           description="Number of pages per split file (min 1)",
+     *           minimum=1
+     *         )
+     *       )
+     *     )
+     *   ),
+     *   @OA\Response(
+     *     response=200,
+     *     description="ZIP archive of split PDF files",
+     *     @OA\MediaType(mediaType="application/zip")
+     *   ),
+     *   @OA\Response(
+     *     response=400,
+     *     description="Validation error"
+     *   ),
+     *   @OA\Response(
+     *     response=500,
+     *     description="Splitting failed"
+     *   )
+     * )
+     */
     public function processSplitPdf(Request $request)
     {
         $this->trackFeatureUsage('split-pdf');
@@ -268,6 +510,48 @@ class PDFController extends Controller
         return view('pdf.protect-pdf');
     }
 
+
+    /**
+     * Protect an uploaded PDF with a password.
+     *
+     * @OA\Post(
+     *   path="/api/pdf/protect",
+     *   tags={"PDF"},
+     *   summary="Add password protection to a PDF",
+     *   @OA\RequestBody(
+     *     required=true,
+     *     @OA\MediaType(
+     *       mediaType="multipart/form-data",
+     *       @OA\Schema(
+     *         @OA\Property(
+     *           property="pdf",
+     *           type="string",
+     *           format="binary",
+     *           description="The PDF file to protect"
+     *         ),
+     *         @OA\Property(
+     *           property="password",
+     *           type="string",
+     *           description="Password to set (min 4 characters)"
+     *         )
+     *       )
+     *     )
+     *   ),
+     *   @OA\Response(
+     *     response=200,
+     *     description="Protected PDF download",
+     *     @OA\MediaType(mediaType="application/pdf")
+     *   ),
+     *   @OA\Response(
+     *     response=400,
+     *     description="Validation error"
+     *   ),
+     *   @OA\Response(
+     *     response=500,
+     *     description="Protection failed"
+     *   )
+     * )
+     */
     public function processProtectPdf(Request $request)
     {
         $this->trackFeatureUsage('protect-pdf');
@@ -305,6 +589,48 @@ class PDFController extends Controller
         return view('pdf.unlock-pdf');
     }
 
+
+     /**
+     * Unlock a password-protected PDF.
+     *
+     * @OA\Post(
+     *   path="/api/pdf/unlock",
+     *   tags={"PDF"},
+     *   summary="Remove password protection from a PDF",
+     *   @OA\RequestBody(
+     *     required=true,
+     *     @OA\MediaType(
+     *       mediaType="multipart/form-data",
+     *       @OA\Schema(
+     *         @OA\Property(
+     *           property="pdf",
+     *           type="string",
+     *           format="binary",
+     *           description="The locked PDF file to unlock"
+     *         ),
+     *         @OA\Property(
+     *           property="password",
+     *           type="string",
+     *           description="Password for the PDF"
+     *         )
+     *       )
+     *     )
+     *   ),
+     *   @OA\Response(
+     *     response=200,
+     *     description="Unlocked PDF download",
+     *     @OA\MediaType(mediaType="application/pdf")
+     *   ),
+     *   @OA\Response(
+     *     response=400,
+     *     description="Validation error"
+     *   ),
+     *   @OA\Response(
+     *     response=500,
+     *     description="Unlocking failed"
+     *   )
+     * )
+     */
     public function processUnlockPdf(Request $request)
     {
         $this->trackFeatureUsage('unlock-pdf');
@@ -339,6 +665,49 @@ class PDFController extends Controller
         return view('pdf.resize-pages');
     }
 
+
+      /**
+     * Resize pages of an uploaded PDF to a specified paper size.
+     *
+     * @OA\Post(
+     *   path="/api/pdf/resize",
+     *   tags={"PDF"},
+     *   summary="Resize PDF pages to A4, A5, or A6",
+     *   @OA\RequestBody(
+     *     required=true,
+     *     @OA\MediaType(
+     *       mediaType="multipart/form-data",
+     *       @OA\Schema(
+     *         @OA\Property(
+     *           property="pdf",
+     *           type="string",
+     *           format="binary",
+     *           description="The PDF file whose pages will be resized"
+     *         ),
+     *         @OA\Property(
+     *           property="size",
+     *           type="string",
+     *           description="Target page size",
+     *           enum={"A4","A5","A6"}
+     *         )
+     *       )
+     *     )
+     *   ),
+     *   @OA\Response(
+     *     response=200,
+     *     description="Resized PDF download",
+     *     @OA\MediaType(mediaType="application/pdf")
+     *   ),
+     *   @OA\Response(
+     *     response=400,
+     *     description="Validation error"
+     *   ),
+     *   @OA\Response(
+     *     response=500,
+     *     description="Resize operation failed"
+     *   )
+     * )
+     */
     public function processResizePages(Request $request)
     {
         $this->trackFeatureUsage('resize-pdf');
@@ -371,6 +740,50 @@ class PDFController extends Controller
         return view('pdf.compress');
     }
 
+
+     /**
+     * Compress an uploaded PDF to reduce file size.
+     *
+     * @OA\Post(
+     *   path="/api/pdf/compress",
+     *   tags={"PDF"},
+     *   summary="Compress a PDF with specified quality",
+     *   @OA\RequestBody(
+     *     required=true,
+     *     @OA\MediaType(
+     *       mediaType="multipart/form-data",
+     *       @OA\Schema(
+     *         @OA\Property(
+     *           property="pdf",
+     *           type="string",
+     *           format="binary",
+     *           description="The PDF file to compress"
+     *         ),
+     *         @OA\Property(
+     *           property="quality",
+     *           type="integer",
+     *           description="Compression quality (10–100)",
+     *           minimum=10,
+     *           maximum=100
+     *         )
+     *       )
+     *     )
+     *   ),
+     *   @OA\Response(
+     *     response=200,
+     *     description="Compressed PDF download",
+     *     @OA\MediaType(mediaType="application/pdf")
+     *   ),
+     *   @OA\Response(
+     *     response=400,
+     *     description="Validation error"
+     *   ),
+     *   @OA\Response(
+     *     response=500,
+     *     description="Compression failed"
+     *   )
+     * )
+     */
     public function processCompress(Request $request)
     {
         $this->trackFeatureUsage('compress-pdf');

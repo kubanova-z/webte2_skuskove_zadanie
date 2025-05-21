@@ -19,8 +19,39 @@ class ConfirmablePasswordController extends Controller
         return view('auth.confirm-password');
     }
 
-    /**
-     * Confirm the user's password.
+     /**
+     * Confirm the user’s current password for sensitive actions.
+     *
+     * @OA\Post(
+     *   path="/api/password/confirm",
+     *   tags={"Auth"},
+     *   summary="Verify the authenticated user’s password",
+     *   security={{"sanctum": {}}},
+     *   @OA\RequestBody(
+     *     required=true,
+     *     @OA\JsonContent(
+     *       required={"password"},
+     *       @OA\Property(
+     *         property="password",
+     *         type="string",
+     *         format="password",
+     *         example="currentPassword123"
+     *       )
+     *     )
+     *   ),
+     *   @OA\Response(
+     *     response=200,
+     *     description="Password confirmed"
+     *   ),
+     *   @OA\Response(
+     *     response=422,
+     *     description="Invalid password"
+     *   ),
+     *   @OA\Response(
+     *     response=401,
+     *     description="Unauthenticated"
+     *   )
+     * )
      */
     public function store(Request $request): RedirectResponse
     {

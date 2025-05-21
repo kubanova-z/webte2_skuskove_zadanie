@@ -12,6 +12,21 @@ class UserGuideController extends Controller
         return view('user-guide');
     }
 
+
+    /**
+     * Download the user guide as a PDF.
+     *
+     * @OA\Get(
+     *   path="/api/user-guide/pdf",
+     *   tags={"UserGuide"},
+     *   summary="Download the user guide PDF",
+     *   @OA\Response(
+     *     response=200,
+     *     description="User guide PDF file",
+     *     @OA\MediaType(mediaType="application/pdf")
+     *   )
+     * )
+     */
     public function downloadPdf()
     {
         $pdf = \Barryvdh\DomPDF\Facade\Pdf::loadView('user-guide-pdf');

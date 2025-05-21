@@ -20,7 +20,29 @@ class AuthenticatedSessionController extends Controller
     }
 
     /**
-     * Handle an incoming authentication request.
+     * Log in a user and start a session.
+     *
+     * @OA\Post(
+     *   path="/api/login",
+     *   tags={"Auth"},
+     *   summary="Authenticate user credentials",
+     *   @OA\RequestBody(
+     *     required=true,
+     *     @OA\JsonContent(
+     *       required={"email","password"},
+     *       @OA\Property(property="email", type="string", format="email", example="user@example.com"),
+     *       @OA\Property(property="password", type="string", format="password", example="secret123")
+     *     )
+     *   ),
+     *   @OA\Response(
+     *     response=302,
+     *     description="Redirect to dashboard on success"
+     *   ),
+     *   @OA\Response(
+     *     response=401,
+     *     description="Invalid credentials"
+     *   )
+     * )
      */
     public function store(LoginRequest $request): RedirectResponse
     {
@@ -32,7 +54,17 @@ class AuthenticatedSessionController extends Controller
     }
 
     /**
-     * Destroy an authenticated session.
+     * Log out the current user and invalidate the session.
+     *
+     * @OA\Post(
+     *   path="/api/logout",
+     *   tags={"Auth"},
+     *   summary="End the authenticated session",
+     *   @OA\Response(
+     *     response=302,
+     *     description="Redirect to home page"
+     *   )
+     * )
      */
     public function destroy(Request $request): RedirectResponse
     {
