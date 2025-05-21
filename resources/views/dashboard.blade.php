@@ -72,6 +72,12 @@
                 <p class="text-sm text-gray-700 mt-2">{{ __('messages.resize_pages_desc') }}</p>
             </a>
 
+            {{-- FUNCTION - Compress PDF --}}
+            <a href="{{ route('pdf.compress.form') }}" class="block bg-pink-100 border border-pink-300 p-6 rounded-lg shadow hover:bg-pink-200 transition">
+                <h3 class="text-lg font-semibold text-pink-900">{{ __('messages.compress_title') }}</h3>
+                <p class="text-sm text-gray-700 mt-2">{{ __('messages.compress_desc') }}</p>
+            </a>
+
 
 
 

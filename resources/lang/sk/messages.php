@@ -98,5 +98,15 @@ return [
     'unlock_pdf_desc' => 'Zadaj heslo a odstráň ochranu z PDF súboru.',
     'resize_pages_title' => 'Zmeniť veľkosť strán',
     'resize_pages_desc' => 'Zmenši alebo zväčši stránky PDF na A4, A5 alebo A6.',
+    'compress_title' => 'Komprimovať PDF',
+    'compress-pdf'   => 'Komprimovanie  PDF',
+    'compress_desc' => 'Nahraj PDF a skomprimuj ho.',
+    'compress_choose_file' => 'Nahraj PDF súbor',
+    'compress_button' => 'Komprimovať PDF',
+    'confirm_delete_title' => 'Potvrdiť vymazanie',
+    'confirm_delete_warning' => 'Vymazanie celej histórie prihlásení',
+    'cancel' => 'Zavrieť',
+    'confirm' => 'Potvrdiť',
+
 
 ];

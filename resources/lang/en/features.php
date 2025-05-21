@@ -10,4 +10,5 @@ return [
     'protect-pdf' => 'Protect PDF',
     'unlock-pdf' => 'Unlock PDF',
     'resize-pdf' => 'Resize PDF',
+    'compress-pdf' => 'Compress PDF',
 ];

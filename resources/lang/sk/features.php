@@ -10,4 +10,5 @@ return [
     'protect-pdf' => 'Zabezpečiť PDF',
     'unlock-pdf' => 'Odomknúť PDF',
     'resize-pdf' => 'Zmeniť veľkosť PDF',
+    'compress-pdf' => 'Komprimovať PDF',
 ];

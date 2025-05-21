@@ -98,5 +98,14 @@ return [
     'unlock_pdf_desc' => 'Enter the password and remove protection from the PDF file.',
     'resize_pages_title' => 'Resize Pages',
     'resize_pages_desc' => 'Shrink or enlarge PDF pages to A4, A5, or A6.',
+    'compress_title' => 'Compress PDF',
+    'compress-pdf'   => 'Compress PDF',
+    'compress_desc' => 'Upload PDF and compress it.',
+    'compress_choose_file' => 'Upload PDF file',
+    'compress_button' => 'Compress PDF',
+    'confirm_delete_title' => 'Confirm Delete',
+    'confirm_delete_warning' => 'Deleting the whole login history',
+    'cancel' => 'Cancel',
+    'confirm' => 'Confirm',
 
 ];
