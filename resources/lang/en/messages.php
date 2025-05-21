@@ -64,9 +64,26 @@ return [
     'rotate_pages_title' => 'Rotate pages in PDF',
     'rotate_pages_desc' => 'Choose pages that you want to rotate by 90°, 180° or 270°.',
 
+    'protect_pdf_title' => 'Protect PDF',
+    'protect_pdf_desc'  => 'Upload a PDF and set a password to protect it.',
+
+    'unlock_pdf_title'  => 'Unlock PDF',
+    'unlock_pdf_desc'   => 'Enter the password to remove protection from a PDF file.',
+
+    'resize_pages_title'=> 'Resize PDF pages',
+    'resize_pages_desc' => 'Shrink or enlarge PDF pages to A4, A5, or A6.',
+
     'split_pdf_title' => 'Split PDF',
     'split_pdf_desc' => 'Split PDF into multiple separate files.',
 
+    'compress_title'  => 'Compress PDF',
+    'compress_desc' => 'Compress PDF file to reduce its size.',
+
+
+    
+    
+    'compress_choose_file' => 'Choose PDF to compress',
+    'compress_button'      => 'Compress',
     'select_images' => 'Select Images',
     'convert_to_pdf' => 'Convert to PDF',
     'select_pdfs' => 'Select PDFs',
@@ -84,29 +101,5 @@ return [
     'split_pdf' => 'Split PDF',
     'used_features' => 'Used Features',
     'none' => 'None',
-    'protect_pdf_title' => 'Protect PDF with Password',
-    'pdf_file' => 'PDF file',
-    'password' => 'Password',
-    'protect_pdf_button' => 'Protect PDF',
-    'unlock_pdf_title' => 'Unlock PDF File',
-    'locked_pdf_file' => 'Locked PDF file',
-    'unlock_pdf_button' => 'Unlock PDF',
-    'resize_pdf_title' => 'Resize PDF Pages',
-    'page_format' => 'New page format',
-    'resize_pdf_button' => 'Resize Pages',
-    'protect_pdf_desc' => 'Upload a PDF and set a password to protect it.',
-    'unlock_pdf_desc' => 'Enter the password and remove protection from the PDF file.',
-    'resize_pages_title' => 'Resize Pages',
-    'resize_pages_desc' => 'Shrink or enlarge PDF pages to A4, A5, or A6.',
-    'compress_title' => 'Compress PDF',
-    'compress-pdf'   => 'Compress PDF',
-    'compress_desc' => 'Upload PDF and compress it.',
-    'compress_choose_file' => 'Upload PDF file',
-    'compress_button' => 'Compress PDF',
-    'confirm_delete_title' => 'Confirm Delete',
-    'confirm_delete_warning' => 'Deleting the whole login history',
-    'cancel' => 'Cancel',
-    'confirm' => 'Confirm',
-    'available_functionalities' => 'Available functionalities',
 
 ];

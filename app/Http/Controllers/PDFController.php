@@ -429,6 +429,44 @@ class PDFController extends Controller
     }
 
 
+    //compress PDF
+     public function showCompressForm()
+    {
+        return view('pdf.compress');
+    }
+    
+    public function processCompress(Request $request)
+{
+    $this->trackFeatureUsage('compress-pdf');
 
+    $data = $request->validate([
+      'pdf'     => 'required|file|mimes:pdf|max:10240',
+      'quality' => 'required|integer|min:10|max:100',
+    ]);
+
+    $in     = $request->file('pdf')->storeAs('pdf', 'input.pdf', 'local');
+    $inPath = storage_path("app/{$in}");
+    $outPath = storage_path('app/pdf/compressed_'.time().'.pdf');
+
+    $script = base_path('scripts/compress-pdf.py');
+    $process = new Process([
+      'python3', $script,
+      $inPath,
+      $outPath,
+      $data['quality']
+    ]);
+
+    $process->run();
+
+    if (! $process->isSuccessful()) {
+      return back()->withErrors([
+        'pdf' => "Compression failed: " . $process->getErrorOutput()
+      ]);
+    }
+
+    return response()
+      ->download($outPath)
+      ->deleteFileAfterSend();
+}
 
 }

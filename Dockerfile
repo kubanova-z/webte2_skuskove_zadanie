@@ -32,5 +32,4 @@ RUN chown -R www-data:www-data storage bootstrap/cache public/build
 # 6) Expose the port your app will run on
 EXPOSE 8000
 
-# 7) By default, run the Laravel dev server
-CMD ["php", "artisan", "serve", "--host=0.0.0.0", "--port=8000"]
+CMD ["php-fpm"]

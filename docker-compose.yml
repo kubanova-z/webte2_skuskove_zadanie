@@ -5,27 +5,12 @@ services:
     build: .
     container_name: laravel_app
     ports:
-      - "8000:8000"
+      - "9000:9000"
     volumes:
       - .:/var/www
-    env_file:
-      - .env
-    depends_on:
-      - db
+    networks:
+      - laravel
 
-  db:
-    image: mysql:8.0
-    container_name: laravel_db
-    restart: unless-stopped
-    ports:
-      - "3306:3306"
-    environment:
-      MYSQL_ROOT_PASSWORD: secret
-      MYSQL_DATABASE: ${DB_DATABASE}
-      MYSQL_USER: ${DB_USERNAME}
-      MYSQL_PASSWORD: ${DB_PASSWORD}
-    volumes:
-      - db_data:/var/lib/mysql
+networks:
+  laravel:
 
-volumes:
-  db_data:

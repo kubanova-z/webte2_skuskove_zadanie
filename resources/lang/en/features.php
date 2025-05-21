@@ -7,8 +7,4 @@ return [
     'jpg-to-pdf' => 'Convert JPG to PDF',
     'rotate-pages' => 'Rotate PDF Pages',
     'split-pdf' => 'Split PDF into Parts',
-    'protect-pdf' => 'Protect PDF',
-    'unlock-pdf' => 'Unlock PDF',
-    'resize-pdf' => 'Resize PDF',
-    'compress-pdf' => 'Compress PDF',
 ];
